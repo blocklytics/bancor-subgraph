@@ -1,9 +1,17 @@
 import { BigInt } from "@graphprotocol/graph-ts"
 import {
-  Registry,
+  ContractRegistry,
   AddressUpdate,
   // OwnerUpdate TODO: figure out if necessary.  If so, determine best way to resolve name conflicts
-} from "../generated/Registry/Registry"
+} from "../generated/ContractRegistry/ContractRegistry"
+import {
+  ConverterRegistry,
+  TokenAddition,
+  TokenRemoval,
+  ConverterAddition,
+  ConverterRemoval,
+  // OwnerUpdate
+} from "../generated/templates/ConverterRegistry/ConverterRegistry"
 import {
   Converter,
   Conversion,
@@ -22,7 +30,7 @@ import {
 } from "../generated/templates/SmartToken/SmartToken"
 import { ExampleEntity } from "../generated/schema"
 
-// Registry events
+// Contract Registry events
 export function handleAddressUpdate(event: AddressUpdate): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
@@ -71,6 +79,18 @@ export function handleAddressUpdate(event: AddressUpdate): void {
 }
 
 // export function handleOwnerUpdate(event: OwnerUpdate): void {}
+
+// Converter Registry events
+export function handleTokenAddition(event: TokenAddition): void {}
+
+export function handleTokenRemoval(event: TokenRemoval): void {}
+
+export function handleConverterAddition(event: ConverterAddition): void {}
+
+export function handleConverterRemoval(event: ConverterRemoval): void {}
+
+// export function handleOwnerUpdate(event: OwnerUpdate): void {}
+
 
 // Converter events
 export function handleConversion(event: Conversion): void {}

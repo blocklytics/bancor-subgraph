@@ -59,9 +59,39 @@ export class OwnerUpdate__Params {
   }
 }
 
-export class Registry extends SmartContract {
-  static bind(address: Address): Registry {
-    return new Registry("Registry", address);
+export class ContractRegistry extends SmartContract {
+  static bind(address: Address): ContractRegistry {
+    return new ContractRegistry("ContractRegistry", address);
+  }
+
+  BANCOR_CONVERTER_UPGRADER(): Bytes {
+    let result = super.call("BANCOR_CONVERTER_UPGRADER", []);
+
+    return result[0].toBytes();
+  }
+
+  try_BANCOR_CONVERTER_UPGRADER(): CallResult<Bytes> {
+    let result = super.tryCall("BANCOR_CONVERTER_UPGRADER", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
+  }
+
+  BNT_TOKEN(): Bytes {
+    let result = super.call("BNT_TOKEN", []);
+
+    return result[0].toBytes();
+  }
+
+  try_BNT_TOKEN(): CallResult<Bytes> {
+    let result = super.tryCall("BNT_TOKEN", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
   }
 
   getAddress(_contractName: Bytes): Address {
@@ -83,6 +113,21 @@ export class Registry extends SmartContract {
     return CallResult.fromValue(value[0].toAddress());
   }
 
+  CONTRACT_REGISTRY(): Bytes {
+    let result = super.call("CONTRACT_REGISTRY", []);
+
+    return result[0].toBytes();
+  }
+
+  try_CONTRACT_REGISTRY(): CallResult<Bytes> {
+    let result = super.tryCall("CONTRACT_REGISTRY", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
+  }
+
   contractNames(param0: BigInt): string {
     let result = super.call("contractNames", [
       EthereumValue.fromUnsignedBigInt(param0)
@@ -102,6 +147,36 @@ export class Registry extends SmartContract {
     return CallResult.fromValue(value[0].toString());
   }
 
+  BANCOR_CONVERTER_FACTORY(): Bytes {
+    let result = super.call("BANCOR_CONVERTER_FACTORY", []);
+
+    return result[0].toBytes();
+  }
+
+  try_BANCOR_CONVERTER_FACTORY(): CallResult<Bytes> {
+    let result = super.tryCall("BANCOR_CONVERTER_FACTORY", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
+  }
+
+  BNT_CONVERTER(): Bytes {
+    let result = super.call("BNT_CONVERTER", []);
+
+    return result[0].toBytes();
+  }
+
+  try_BNT_CONVERTER(): CallResult<Bytes> {
+    let result = super.tryCall("BNT_CONVERTER", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
+  }
+
   itemCount(): BigInt {
     let result = super.call("itemCount", []);
 
@@ -117,6 +192,36 @@ export class Registry extends SmartContract {
     return CallResult.fromValue(value[0].toBigInt());
   }
 
+  BANCOR_FORMULA(): Bytes {
+    let result = super.call("BANCOR_FORMULA", []);
+
+    return result[0].toBytes();
+  }
+
+  try_BANCOR_FORMULA(): CallResult<Bytes> {
+    let result = super.tryCall("BANCOR_FORMULA", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
+  }
+
+  CONTRACT_FEATURES(): Bytes {
+    let result = super.call("CONTRACT_FEATURES", []);
+
+    return result[0].toBytes();
+  }
+
+  try_CONTRACT_FEATURES(): CallResult<Bytes> {
+    let result = super.tryCall("CONTRACT_FEATURES", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
+  }
+
   owner(): Address {
     let result = super.call("owner", []);
 
@@ -130,6 +235,36 @@ export class Registry extends SmartContract {
     }
     let value = result.value;
     return CallResult.fromValue(value[0].toAddress());
+  }
+
+  BANCOR_NETWORK(): Bytes {
+    let result = super.call("BANCOR_NETWORK", []);
+
+    return result[0].toBytes();
+  }
+
+  try_BANCOR_NETWORK(): CallResult<Bytes> {
+    let result = super.tryCall("BANCOR_NETWORK", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
+  }
+
+  BANCOR_GAS_PRICE_LIMIT(): Bytes {
+    let result = super.call("BANCOR_GAS_PRICE_LIMIT", []);
+
+    return result[0].toBytes();
+  }
+
+  try_BANCOR_GAS_PRICE_LIMIT(): CallResult<Bytes> {
+    let result = super.tryCall("BANCOR_GAS_PRICE_LIMIT", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
   }
 
   addressOf(_contractName: Bytes): Address {
@@ -149,6 +284,21 @@ export class Registry extends SmartContract {
     }
     let value = result.value;
     return CallResult.fromValue(value[0].toAddress());
+  }
+
+  BANCOR_X(): Bytes {
+    let result = super.call("BANCOR_X", []);
+
+    return result[0].toBytes();
+  }
+
+  try_BANCOR_X(): CallResult<Bytes> {
+    let result = super.tryCall("BANCOR_X", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBytes());
   }
 
   newOwner(): Address {

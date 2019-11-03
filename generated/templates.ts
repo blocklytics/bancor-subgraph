@@ -2,6 +2,12 @@
 
 import { Address, DataSourceTemplate } from "@graphprotocol/graph-ts";
 
+export class ConverterRegistry extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("ConverterRegistry", [address.toHex()]);
+  }
+}
+
 export class Converter extends DataSourceTemplate {
   static create(address: Address): void {
     DataSourceTemplate.create("Converter", [address.toHex()]);
