@@ -26,6 +26,25 @@ dataSources:
         - event: OwnerUpdate(indexed address,indexed address)
           handler: handleOwnerUpdate
       file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: ConverterFactory
+    network: mainnet
+    source:
+      address: "0x03f66746572a369521f681e8e90ccc737381694d"
+      abi: ConverterFactory
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - NewConverter
+      abis:
+        - name: ConverterFactory
+          file: ./abis/ConverterFactory.json
+      eventHandlers:
+        - event: NewConverter(indexed address,indexed address)
+          handler: handleNewConverter
+      file: ./src/mapping.ts
 templates:
   - kind: ethereum/contract
     name: ConverterRegistry

@@ -4,6 +4,10 @@ import {
   AddressUpdate,
   // OwnerUpdate TODO: figure out if necessary.  If so, determine best way to resolve name conflicts
 } from "../generated/ContractRegistry/ContractRegistry"
+import { 
+  ConverterFactory, 
+  NewConverter 
+} from "../generated/ConverterFactory/ConverterFactory"
 import {
   ConverterRegistry,
   TokenAddition,
@@ -79,6 +83,9 @@ export function handleAddressUpdate(event: AddressUpdate): void {
 }
 
 // export function handleOwnerUpdate(event: OwnerUpdate): void {}
+
+// Converter Factory events
+export function handleNewConverter(event: NewConverter): void {}
 
 // Converter Registry events
 export function handleTokenAddition(event: TokenAddition): void {}
