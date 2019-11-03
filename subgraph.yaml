@@ -1,13 +1,15 @@
 specVersion: 0.0.2
+description: Bancor
+repository: https://github.com/blocklytics/bancor-subgraph
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Contract
+    name: Registry
     network: mainnet
     source:
       address: "0x7148b1c9154BCF273a2C7d7B90e3edC6FEE395E6"
-      abi: Contract
+      abi: Registry
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -16,11 +18,72 @@ dataSources:
         - AddressUpdate
         - OwnerUpdate
       abis:
-        - name: Contract
-          file: ./abis/Contract.json
+        - name: Registry
+          file: ./abis/Registry.json
       eventHandlers:
         - event: AddressUpdate(indexed bytes32,address)
           handler: handleAddressUpdate
         - event: OwnerUpdate(indexed address,indexed address)
+          handler: handleOwnerUpdate
+      file: ./src/mapping.ts
+templates:
+  - kind: ethereum/contract
+    name: Converter
+    network: mainnet
+    source:
+      abi: Converter
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - Conversion
+        - ConversionFeeUpdate
+        - ManagerUpdate
+        - OwnerUpdate
+      abis:
+        - name: Converter
+          file: ./abis/Converter.json
+      eventHandlers:
+        - event: Conversion(indexed address,indexed address,indexed address,uint256,uint256,uint256,uint256)
+          handler: handleConversion
+        - event: ConversionFeeUpdate(uint32,uint32)
+          handler: handleConversionFeeUpdate
+        - event: ManagerUpdate(address,address)
+          handler: handleManagerUpdate
+        - event: OwnerUpdate(address,address)
+          handler: handleOwnerUpdate
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: SmartToken
+    network: mainnet
+    source:
+      abi: SmartToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      entities:
+        - NewSmartToken
+        - Issuance
+        - Destruction
+        - Transfer
+        - Approval
+        - OwnerUpdate
+      abis:
+        - name: SmartToken
+          file: ./abis/SmartToken.json
+      eventHandlers:
+        - event: NewSmartToken(address)
+          handler: handleNewSmartToken
+        - event: Issuance(uint256)
+          handler: handleIssuance
+        - event: Destruction(uint256)
+          handler: handleDestruction
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: OwnerUpdate(address,address)
           handler: handleOwnerUpdate
       file: ./src/mapping.ts

@@ -59,9 +59,9 @@ export class OwnerUpdate__Params {
   }
 }
 
-export class Contract extends SmartContract {
-  static bind(address: Address): Contract {
-    return new Contract("Contract", address);
+export class Registry extends SmartContract {
+  static bind(address: Address): Registry {
+    return new Registry("Registry", address);
   }
 
   getAddress(_contractName: Bytes): Address {
