@@ -1,4 +1,15 @@
 [{
+    "constant": true,
+    "inputs": [],
+    "name": "BANCOR_CONVERTER_UPGRADER",
+    "outputs": [{
+        "name": "",
+        "type": "bytes32"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+}, {
     "constant": false,
     "inputs": [{
         "name": "_connectorToken",
@@ -60,6 +71,17 @@
     "type": "function"
 }, {
     "constant": true,
+    "inputs": [],
+    "name": "BNT_TOKEN",
+    "outputs": [{
+        "name": "",
+        "type": "bytes32"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "constant": true,
     "inputs": [{
         "name": "_fromToken",
         "type": "address"
@@ -92,6 +114,38 @@
 }, {
     "constant": false,
     "inputs": [{
+        "name": "_path",
+        "type": "address[]"
+    }, {
+        "name": "_amount",
+        "type": "uint256"
+    }, {
+        "name": "_minReturn",
+        "type": "uint256"
+    }, {
+        "name": "_block",
+        "type": "uint256"
+    }, {
+        "name": "_v",
+        "type": "uint8"
+    }, {
+        "name": "_r",
+        "type": "bytes32"
+    }, {
+        "name": "_s",
+        "type": "bytes32"
+    }],
+    "name": "quickConvertPrioritized",
+    "outputs": [{
+        "name": "",
+        "type": "uint256"
+    }],
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "function"
+}, {
+    "constant": false,
+    "inputs": [{
         "name": "_disable",
         "type": "bool"
     }],
@@ -103,38 +157,25 @@
 }, {
     "constant": false,
     "inputs": [{
-        "name": "_extensions",
+        "name": "_fromToken",
         "type": "address"
-    }],
-    "name": "setExtensions",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-}, {
-    "constant": true,
-    "inputs": [],
-    "name": "extensions",
-    "outputs": [{
-        "name": "",
+    }, {
+        "name": "_toToken",
         "type": "address"
-    }],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-}, {
-    "constant": true,
-    "inputs": [{
+    }, {
         "name": "_amount",
         "type": "uint256"
+    }, {
+        "name": "_minReturn",
+        "type": "uint256"
     }],
-    "name": "getConversionFeeAmount",
+    "name": "convertInternal",
     "outputs": [{
         "name": "",
         "type": "uint256"
     }],
     "payable": false,
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
 }, {
     "constant": false,
@@ -143,6 +184,23 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [{
+        "name": "_amount",
+        "type": "uint256"
+    }, {
+        "name": "_magnitude",
+        "type": "uint8"
+    }],
+    "name": "getFinalAmount",
+    "outputs": [{
+        "name": "",
+        "type": "uint256"
+    }],
+    "payable": false,
+    "stateMutability": "view",
     "type": "function"
 }, {
     "constant": true,
@@ -213,6 +271,17 @@
     "type": "function"
 }, {
     "constant": false,
+    "inputs": [{
+        "name": "_whitelist",
+        "type": "address"
+    }],
+    "name": "setConversionWhitelist",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "constant": false,
     "inputs": [],
     "name": "clearQuickBuyPath",
     "outputs": [],
@@ -251,6 +320,17 @@
     "outputs": [{
         "name": "",
         "type": "uint32"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [],
+    "name": "BANCOR_CONVERTER_FACTORY",
+    "outputs": [{
+        "name": "",
+        "type": "bytes32"
     }],
     "payable": false,
     "stateMutability": "view",
@@ -296,24 +376,15 @@
     "stateMutability": "nonpayable",
     "type": "function"
 }, {
-    "constant": false,
-    "inputs": [{
-        "name": "_connectorToken",
-        "type": "address"
-    }, {
-        "name": "_sellAmount",
-        "type": "uint256"
-    }, {
-        "name": "_minReturn",
-        "type": "uint256"
-    }],
-    "name": "sell",
+    "constant": true,
+    "inputs": [],
+    "name": "BANCOR_FORMULA",
     "outputs": [{
         "name": "",
-        "type": "uint256"
+        "type": "bytes32"
     }],
     "payable": false,
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
 }, {
     "constant": true,
@@ -375,6 +446,28 @@
     "stateMutability": "nonpayable",
     "type": "function"
 }, {
+    "constant": true,
+    "inputs": [],
+    "name": "registry",
+    "outputs": [{
+        "name": "",
+        "type": "address"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [],
+    "name": "CONTRACT_FEATURES",
+    "outputs": [{
+        "name": "",
+        "type": "bytes32"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+}, {
     "constant": false,
     "inputs": [{
         "name": "_disable",
@@ -392,6 +485,59 @@
     "outputs": [{
         "name": "",
         "type": "address"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [{
+        "name": "_fromConnectorToken",
+        "type": "address"
+    }, {
+        "name": "_toConnectorToken",
+        "type": "address"
+    }, {
+        "name": "_sellAmount",
+        "type": "uint256"
+    }],
+    "name": "getCrossConnectorReturn",
+    "outputs": [{
+        "name": "",
+        "type": "uint256"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [],
+    "name": "BANCOR_NETWORK",
+    "outputs": [{
+        "name": "",
+        "type": "bytes32"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [],
+    "name": "BANCOR_GAS_PRICE_LIMIT",
+    "outputs": [{
+        "name": "",
+        "type": "bytes32"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [],
+    "name": "CONVERTER_CONVERSION_WHITELIST",
+    "outputs": [{
+        "name": "",
+        "type": "uint256"
     }],
     "payable": false,
     "stateMutability": "view",
@@ -438,33 +584,13 @@
 }, {
     "constant": false,
     "inputs": [{
-        "name": "_connectorToken",
+        "name": "_registry",
         "type": "address"
-    }, {
-        "name": "_depositAmount",
-        "type": "uint256"
-    }, {
-        "name": "_minReturn",
-        "type": "uint256"
     }],
-    "name": "buy",
-    "outputs": [{
-        "name": "",
-        "type": "uint256"
-    }],
+    "name": "setRegistry",
+    "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
-}, {
-    "constant": true,
-    "inputs": [],
-    "name": "convertibleTokenCount",
-    "outputs": [{
-        "name": "",
-        "type": "uint16"
-    }],
-    "payable": false,
-    "stateMutability": "view",
     "type": "function"
 }, {
     "constant": true,
@@ -473,6 +599,17 @@
     "outputs": [{
         "name": "",
         "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [],
+    "name": "conversionWhitelist",
+    "outputs": [{
+        "name": "",
+        "type": "address"
     }],
     "payable": false,
     "stateMutability": "view",
@@ -578,20 +715,6 @@
     "stateMutability": "payable",
     "type": "function"
 }, {
-    "constant": true,
-    "inputs": [{
-        "name": "_tokenIndex",
-        "type": "uint16"
-    }],
-    "name": "convertibleToken",
-    "outputs": [{
-        "name": "",
-        "type": "address"
-    }],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-}, {
     "constant": false,
     "inputs": [{
         "name": "_newOwner",
@@ -618,7 +741,7 @@
         "name": "_token",
         "type": "address"
     }, {
-        "name": "_extensions",
+        "name": "_registry",
         "type": "address"
     }, {
         "name": "_maxConversionFee",
@@ -661,14 +784,31 @@
         "type": "uint256"
     }, {
         "indexed": false,
-        "name": "_currentPriceN",
+        "name": "_conversionFee",
+        "type": "int256"
+    }],
+    "name": "Conversion",
+    "type": "event"
+}, {
+    "anonymous": false,
+    "inputs": [{
+        "indexed": true,
+        "name": "_connectorToken",
+        "type": "address"
+    }, {
+        "indexed": false,
+        "name": "_tokenSupply",
         "type": "uint256"
     }, {
         "indexed": false,
-        "name": "_currentPriceD",
+        "name": "_connectorBalance",
         "type": "uint256"
+    }, {
+        "indexed": false,
+        "name": "_connectorWeight",
+        "type": "uint32"
     }],
-    "name": "Conversion",
+    "name": "PriceDataUpdate",
     "type": "event"
 }, {
     "anonymous": false,
@@ -686,11 +826,11 @@
 }, {
     "anonymous": false,
     "inputs": [{
-        "indexed": false,
+        "indexed": true,
         "name": "_prevManager",
         "type": "address"
     }, {
-        "indexed": false,
+        "indexed": true,
         "name": "_newManager",
         "type": "address"
     }],
@@ -699,11 +839,11 @@
 }, {
     "anonymous": false,
     "inputs": [{
-        "indexed": false,
+        "indexed": true,
         "name": "_prevOwner",
         "type": "address"
     }, {
-        "indexed": false,
+        "indexed": true,
         "name": "_newOwner",
         "type": "address"
     }],

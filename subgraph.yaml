@@ -5,11 +5,11 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: ContractRegistry
+    name: ContractRegistryContract
     network: mainnet
     source:
       address: "0x52Ae12ABe5D8BD778BD5397F99cA900624CfADD4"
-      abi: ContractRegistry
+      abi: ContractRegistryContract
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -18,20 +18,20 @@ dataSources:
         - AddressUpdate
         - OwnerUpdate
       abis:
-        - name: ContractRegistry
-          file: ./abis/ContractRegistry.json
+        - name: ContractRegistryContract
+          file: ./abis/ContractRegistryContract.json
       eventHandlers:
         - event: AddressUpdate(indexed bytes32,address)
           handler: handleAddressUpdate
         - event: OwnerUpdate(indexed address,indexed address)
-          handler: handleOwnerUpdate
+          handler: handleContractRegistryOwnerUpdate
       file: ./src/mapping.ts
   - kind: ethereum/contract
-    name: ConverterFactory
+    name: ConverterFactoryContract
     network: mainnet
     source:
       address: "0x03f66746572a369521f681e8e90ccc737381694d"
-      abi: ConverterFactory
+      abi: ConverterFactoryContract
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -39,18 +39,18 @@ dataSources:
       entities:
         - NewConverter
       abis:
-        - name: ConverterFactory
-          file: ./abis/ConverterFactory.json
+        - name: ConverterFactoryContract
+          file: ./abis/ConverterFactoryContract.json
       eventHandlers:
         - event: NewConverter(indexed address,indexed address)
           handler: handleNewConverter
       file: ./src/mapping.ts
-templates:
   - kind: ethereum/contract
-    name: ConverterRegistry
+    name: ConverterRegistryContract
     network: mainnet
     source:
-      abi: ConverterRegistry
+      address: "0xc1933ed6a18c175A7C2058807F25e55461Cd92F5"
+      abi: ConverterRegistryContract
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -62,8 +62,8 @@ templates:
         - ConverterRemoval
         - OwnerUpdate
       abis:
-        - name: ConverterRegistry
-          file: ./abis/ConverterRegistry.json
+        - name: ConverterRegistryContract
+          file: ./abis/ConverterRegistryContract.json
       eventHandlers:
         - event: TokenAddition(indexed address)
           handler: handleTokenAddition
@@ -74,40 +74,44 @@ templates:
         - event: ConverterRemoval(indexed address,address)
           handler: handleConverterRemoval
         - event: OwnerUpdate(indexed address,indexed address)
-          handler: handleOwnerUpdate
+          handler: handleConverterRegistryOwnerUpdate
       file: ./src/mapping.ts
+templates:
   - kind: ethereum/contract
-    name: Converter
+    name: ConverterContract
     network: mainnet
     source:
-      abi: Converter
+      abi: ConverterContract
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Conversion
+        - PriceDataUpdate
         - ConversionFeeUpdate
         - ManagerUpdate
         - OwnerUpdate
       abis:
-        - name: Converter
-          file: ./abis/Converter.json
+        - name: ConverterContract
+          file: ./abis/ConverterContract.json
       eventHandlers:
-        - event: Conversion(indexed address,indexed address,indexed address,uint256,uint256,uint256,uint256)
+        - event: Conversion(indexed address,indexed address,indexed address,uint256,uint256,int256)
           handler: handleConversion
+        - event: PriceDataUpdate(indexed address,uint256,uint256,uint32)
+          handler: handlePriceDataUpdate
         - event: ConversionFeeUpdate(uint32,uint32)
           handler: handleConversionFeeUpdate
-        - event: ManagerUpdate(address,address)
+        - event: ManagerUpdate(indexed address,indexed address)
           handler: handleManagerUpdate
-        - event: OwnerUpdate(address,address)
-          handler: handleOwnerUpdate
+        - event: OwnerUpdate(indexed address,indexed address)
+          handler: handleConverterOwnerUpdate
       file: ./src/mapping.ts
   - kind: ethereum/contract
-    name: SmartToken
+    name: SmartTokenContract
     network: mainnet
     source:
-      abi: SmartToken
+      abi: SmartTokenContract
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.2
@@ -120,8 +124,8 @@ templates:
         - Approval
         - OwnerUpdate
       abis:
-        - name: SmartToken
-          file: ./abis/SmartToken.json
+        - name: SmartTokenContract
+          file: ./abis/SmartTokenContract.json
       eventHandlers:
         - event: NewSmartToken(address)
           handler: handleNewSmartToken
@@ -134,5 +138,26 @@ templates:
         - event: Approval(indexed address,indexed address,uint256)
           handler: handleApproval
         - event: OwnerUpdate(address,address)
-          handler: handleOwnerUpdate
+          handler: handleSmartTokenOwnerUpdate
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: ERC20Contract
+    network: mainnet
+    source:
+      abi: ERC20Contract
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - Transfer
+      abis:
+        - name: ERC20Contract
+          file: ./abis/ERC20Contract.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
       file: ./src/mapping.ts

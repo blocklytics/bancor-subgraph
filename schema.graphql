@@ -1,3 +1,58 @@
-type ConverterContract @entity {
+type ConverterRegistry @entity {
   id: ID!
+  converters: [Converter!]
+  smartTokens: [Token!]
+  connectorTokens: [Token!]
+}
+
+type Converter @entity {
+  id: ID!
+  version: String
+  type: String
+  smartToken: Token 
+  connectorTokens: [Token!] 
+  owner: String
+  manager: String
+  conversionFee: BigInt
+  weight: BigInt
+  # maxWeight: BigInt
+  maxConversionFee: BigInt
+  bntBalance: BigInt
+  tokenBalance: BigInt
+}
+
+type Token @entity {
+  id: ID!
+  name: String
+  symbol: String
+  decimals: Int
+  isSmartToken: Boolean
+  version: String
+  standard: String
+  smartTokenType: String # Relay, Liquid, BNT?, Others?
+  transfersEnabled: Boolean
+  converters: [Converter!]
+  connectors: [Connector!]
+  connectorTokens: [Token!]
+}
+
+type Connector @entity {
+  id: ID!
+  virtualBalance: BigInt
+  weight: BigInt
+  isVirtualBalanceEnabled: Boolean
+  isPurchaseEnabled: Boolean
+  isSet: Boolean
+  connectorToken: Token
+}
+
+type Swap @entity {
+  id: ID!
+  fromToken: Token!
+  toToken: Token!
+  amountPurchased: BigInt
+  amountReturned: BigInt
+  conversionFee: BigInt
+  converterUsed: Converter
+  trader: String
 }

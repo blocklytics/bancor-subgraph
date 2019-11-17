@@ -12,7 +12,7 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class ConverterContract extends Entity {
+export class ConverterRegistry extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -20,17 +20,17 @@ export class ConverterContract extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save ConverterContract entity without an ID");
+    assert(id !== null, "Cannot save ConverterRegistry entity without an ID");
     assert(
       id.kind == ValueKind.STRING,
-      "Cannot save ConverterContract entity with non-string ID. " +
+      "Cannot save ConverterRegistry entity with non-string ID. " +
         'Considering using .toHex() to convert the "id" to a string.'
     );
-    store.set("ConverterContract", id.toString(), this);
+    store.set("ConverterRegistry", id.toString(), this);
   }
 
-  static load(id: string): ConverterContract | null {
-    return store.get("ConverterContract", id) as ConverterContract | null;
+  static load(id: string): ConverterRegistry | null {
+    return store.get("ConverterRegistry", id) as ConverterRegistry | null;
   }
 
   get id(): string {
@@ -40,5 +40,720 @@ export class ConverterContract extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get converters(): Array<string> | null {
+    let value = this.get("converters");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set converters(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("converters");
+    } else {
+      this.set("converters", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
+  get smartTokens(): Array<string> | null {
+    let value = this.get("smartTokens");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set smartTokens(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("smartTokens");
+    } else {
+      this.set("smartTokens", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
+  get connectorTokens(): Array<string> | null {
+    let value = this.get("connectorTokens");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set connectorTokens(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("connectorTokens");
+    } else {
+      this.set(
+        "connectorTokens",
+        Value.fromStringArray(value as Array<string>)
+      );
+    }
+  }
+}
+
+export class Converter extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Converter entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Converter entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Converter", id.toString(), this);
+  }
+
+  static load(id: string): Converter | null {
+    return store.get("Converter", id) as Converter | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get version(): string | null {
+    let value = this.get("version");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set version(value: string | null) {
+    if (value === null) {
+      this.unset("version");
+    } else {
+      this.set("version", Value.fromString(value as string));
+    }
+  }
+
+  get type(): string | null {
+    let value = this.get("type");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set type(value: string | null) {
+    if (value === null) {
+      this.unset("type");
+    } else {
+      this.set("type", Value.fromString(value as string));
+    }
+  }
+
+  get smartToken(): string | null {
+    let value = this.get("smartToken");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set smartToken(value: string | null) {
+    if (value === null) {
+      this.unset("smartToken");
+    } else {
+      this.set("smartToken", Value.fromString(value as string));
+    }
+  }
+
+  get connectorTokens(): Array<string> | null {
+    let value = this.get("connectorTokens");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set connectorTokens(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("connectorTokens");
+    } else {
+      this.set(
+        "connectorTokens",
+        Value.fromStringArray(value as Array<string>)
+      );
+    }
+  }
+
+  get owner(): string | null {
+    let value = this.get("owner");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set owner(value: string | null) {
+    if (value === null) {
+      this.unset("owner");
+    } else {
+      this.set("owner", Value.fromString(value as string));
+    }
+  }
+
+  get manager(): string | null {
+    let value = this.get("manager");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set manager(value: string | null) {
+    if (value === null) {
+      this.unset("manager");
+    } else {
+      this.set("manager", Value.fromString(value as string));
+    }
+  }
+
+  get conversionFee(): BigInt | null {
+    let value = this.get("conversionFee");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set conversionFee(value: BigInt | null) {
+    if (value === null) {
+      this.unset("conversionFee");
+    } else {
+      this.set("conversionFee", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get weight(): BigInt | null {
+    let value = this.get("weight");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set weight(value: BigInt | null) {
+    if (value === null) {
+      this.unset("weight");
+    } else {
+      this.set("weight", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get maxConversionFee(): BigInt | null {
+    let value = this.get("maxConversionFee");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set maxConversionFee(value: BigInt | null) {
+    if (value === null) {
+      this.unset("maxConversionFee");
+    } else {
+      this.set("maxConversionFee", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get bntBalance(): BigInt | null {
+    let value = this.get("bntBalance");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set bntBalance(value: BigInt | null) {
+    if (value === null) {
+      this.unset("bntBalance");
+    } else {
+      this.set("bntBalance", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get tokenBalance(): BigInt | null {
+    let value = this.get("tokenBalance");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set tokenBalance(value: BigInt | null) {
+    if (value === null) {
+      this.unset("tokenBalance");
+    } else {
+      this.set("tokenBalance", Value.fromBigInt(value as BigInt));
+    }
+  }
+}
+
+export class Token extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Token entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Token entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Token", id.toString(), this);
+  }
+
+  static load(id: string): Token | null {
+    return store.get("Token", id) as Token | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get name(): string | null {
+    let value = this.get("name");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set name(value: string | null) {
+    if (value === null) {
+      this.unset("name");
+    } else {
+      this.set("name", Value.fromString(value as string));
+    }
+  }
+
+  get symbol(): string | null {
+    let value = this.get("symbol");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set symbol(value: string | null) {
+    if (value === null) {
+      this.unset("symbol");
+    } else {
+      this.set("symbol", Value.fromString(value as string));
+    }
+  }
+
+  get decimals(): i32 {
+    let value = this.get("decimals");
+    return value.toI32();
+  }
+
+  set decimals(value: i32) {
+    this.set("decimals", Value.fromI32(value));
+  }
+
+  get isSmartToken(): boolean {
+    let value = this.get("isSmartToken");
+    return value.toBoolean();
+  }
+
+  set isSmartToken(value: boolean) {
+    this.set("isSmartToken", Value.fromBoolean(value));
+  }
+
+  get version(): string | null {
+    let value = this.get("version");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set version(value: string | null) {
+    if (value === null) {
+      this.unset("version");
+    } else {
+      this.set("version", Value.fromString(value as string));
+    }
+  }
+
+  get standard(): string | null {
+    let value = this.get("standard");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set standard(value: string | null) {
+    if (value === null) {
+      this.unset("standard");
+    } else {
+      this.set("standard", Value.fromString(value as string));
+    }
+  }
+
+  get smartTokenType(): string | null {
+    let value = this.get("smartTokenType");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set smartTokenType(value: string | null) {
+    if (value === null) {
+      this.unset("smartTokenType");
+    } else {
+      this.set("smartTokenType", Value.fromString(value as string));
+    }
+  }
+
+  get transfersEnabled(): boolean {
+    let value = this.get("transfersEnabled");
+    return value.toBoolean();
+  }
+
+  set transfersEnabled(value: boolean) {
+    this.set("transfersEnabled", Value.fromBoolean(value));
+  }
+
+  get converters(): Array<string> | null {
+    let value = this.get("converters");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set converters(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("converters");
+    } else {
+      this.set("converters", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
+  get connectors(): Array<string> | null {
+    let value = this.get("connectors");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set connectors(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("connectors");
+    } else {
+      this.set("connectors", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
+  get connectorTokens(): Array<string> | null {
+    let value = this.get("connectorTokens");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set connectorTokens(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("connectorTokens");
+    } else {
+      this.set(
+        "connectorTokens",
+        Value.fromStringArray(value as Array<string>)
+      );
+    }
+  }
+}
+
+export class Connector extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Connector entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Connector entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Connector", id.toString(), this);
+  }
+
+  static load(id: string): Connector | null {
+    return store.get("Connector", id) as Connector | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get virtualBalance(): BigInt | null {
+    let value = this.get("virtualBalance");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set virtualBalance(value: BigInt | null) {
+    if (value === null) {
+      this.unset("virtualBalance");
+    } else {
+      this.set("virtualBalance", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get weight(): BigInt | null {
+    let value = this.get("weight");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set weight(value: BigInt | null) {
+    if (value === null) {
+      this.unset("weight");
+    } else {
+      this.set("weight", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get isVirtualBalanceEnabled(): boolean {
+    let value = this.get("isVirtualBalanceEnabled");
+    return value.toBoolean();
+  }
+
+  set isVirtualBalanceEnabled(value: boolean) {
+    this.set("isVirtualBalanceEnabled", Value.fromBoolean(value));
+  }
+
+  get isPurchaseEnabled(): boolean {
+    let value = this.get("isPurchaseEnabled");
+    return value.toBoolean();
+  }
+
+  set isPurchaseEnabled(value: boolean) {
+    this.set("isPurchaseEnabled", Value.fromBoolean(value));
+  }
+
+  get isSet(): boolean {
+    let value = this.get("isSet");
+    return value.toBoolean();
+  }
+
+  set isSet(value: boolean) {
+    this.set("isSet", Value.fromBoolean(value));
+  }
+
+  get connectorToken(): string | null {
+    let value = this.get("connectorToken");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set connectorToken(value: string | null) {
+    if (value === null) {
+      this.unset("connectorToken");
+    } else {
+      this.set("connectorToken", Value.fromString(value as string));
+    }
+  }
+}
+
+export class Swap extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Swap entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Swap entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Swap", id.toString(), this);
+  }
+
+  static load(id: string): Swap | null {
+    return store.get("Swap", id) as Swap | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get fromToken(): string {
+    let value = this.get("fromToken");
+    return value.toString();
+  }
+
+  set fromToken(value: string) {
+    this.set("fromToken", Value.fromString(value));
+  }
+
+  get toToken(): string {
+    let value = this.get("toToken");
+    return value.toString();
+  }
+
+  set toToken(value: string) {
+    this.set("toToken", Value.fromString(value));
+  }
+
+  get amountPurchased(): BigInt | null {
+    let value = this.get("amountPurchased");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set amountPurchased(value: BigInt | null) {
+    if (value === null) {
+      this.unset("amountPurchased");
+    } else {
+      this.set("amountPurchased", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get amountReturned(): BigInt | null {
+    let value = this.get("amountReturned");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set amountReturned(value: BigInt | null) {
+    if (value === null) {
+      this.unset("amountReturned");
+    } else {
+      this.set("amountReturned", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get conversionFee(): BigInt | null {
+    let value = this.get("conversionFee");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set conversionFee(value: BigInt | null) {
+    if (value === null) {
+      this.unset("conversionFee");
+    } else {
+      this.set("conversionFee", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get converterUsed(): string | null {
+    let value = this.get("converterUsed");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set converterUsed(value: string | null) {
+    if (value === null) {
+      this.unset("converterUsed");
+    } else {
+      this.set("converterUsed", Value.fromString(value as string));
+    }
+  }
+
+  get trader(): string | null {
+    let value = this.get("trader");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set trader(value: string | null) {
+    if (value === null) {
+      this.unset("trader");
+    } else {
+      this.set("trader", Value.fromString(value as string));
+    }
   }
 }

@@ -2,20 +2,20 @@
 
 import { Address, DataSourceTemplate } from "@graphprotocol/graph-ts";
 
-export class ConverterRegistry extends DataSourceTemplate {
+export class ConverterContract extends DataSourceTemplate {
   static create(address: Address): void {
-    DataSourceTemplate.create("ConverterRegistry", [address.toHex()]);
+    DataSourceTemplate.create("ConverterContract", [address.toHex()]);
   }
 }
 
-export class Converter extends DataSourceTemplate {
+export class SmartTokenContract extends DataSourceTemplate {
   static create(address: Address): void {
-    DataSourceTemplate.create("Converter", [address.toHex()]);
+    DataSourceTemplate.create("SmartTokenContract", [address.toHex()]);
   }
 }
 
-export class SmartToken extends DataSourceTemplate {
+export class ERC20Contract extends DataSourceTemplate {
   static create(address: Address): void {
-    DataSourceTemplate.create("SmartToken", [address.toHex()]);
+    DataSourceTemplate.create("ERC20Contract", [address.toHex()]);
   }
 }
