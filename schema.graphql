@@ -1,8 +1,22 @@
+type ContractRegistry @entity {
+  id: ID!
+  converterRegistries: [ConverterRegistry!]
+  contracts: [BancorContract!] @derivedFrom(field: "registry")
+  owner: String
+}
+
+type BancorContract @entity {
+  id: ID!
+  name: String
+  registry: ContractRegistry
+}
+
 type ConverterRegistry @entity {
   id: ID!
   converters: [Converter!]
   smartTokens: [Token!]
   connectorTokens: [Token!]
+  owner: String
 }
 
 type Converter @entity {
@@ -11,6 +25,9 @@ type Converter @entity {
   type: String
   smartToken: Token 
   connectorTokens: [Token!] 
+  connectors: [Connector!] @derivedFrom(field: "converter")
+  quickBuyPath: [QuickBuyPathMember!]
+  quickBuyPathLength: Int
   owner: String
   manager: String
   conversionFee: BigInt
@@ -19,6 +36,12 @@ type Converter @entity {
   maxConversionFee: BigInt
   bntBalance: BigInt
   tokenBalance: BigInt
+}
+
+type QuickBuyPathMember @entity {
+  id: ID!
+  index: Int!
+  token: Token!
 }
 
 type Token @entity {
@@ -32,8 +55,10 @@ type Token @entity {
   smartTokenType: String # Relay, Liquid, BNT?, Others?
   transfersEnabled: Boolean
   converters: [Converter!]
-  connectors: [Connector!]
   connectorTokens: [Token!]
+  shortestQuickBuyPath: [QuickBuyPathMember!]
+  converterWithShortestQuickBuyPath: Converter
+  owner: String
 }
 
 type Connector @entity {
@@ -44,6 +69,7 @@ type Connector @entity {
   isPurchaseEnabled: Boolean
   isSet: Boolean
   connectorToken: Token
+  converter: Converter
 }
 
 type Swap @entity {
@@ -54,5 +80,32 @@ type Swap @entity {
   amountReturned: BigInt
   conversionFee: BigInt
   converterUsed: Converter
-  trader: String
+  transaction: Transaction
+  trader: User
+  logIndex: Int
+}
+
+type Transaction @entity {
+  id: ID!
+  blockNumber: BigInt
+  blockTimestamp: BigInt
+  gasUsed: BigInt
+  gasPrice: BigInt
+  swaps: [Swap!] @derivedFrom(field: "transaction")
+}
+
+type UserTokenSwapTotal @entity {
+  id: ID! # Concatenation of user, fromToken, and toToken addresses
+  user: User!
+  fromToken: Token!
+  toToken: Token!
+  totalAmountPurchased: BigInt
+  totalAmountReturned: BigInt
+}
+
+type User @entity {
+  id: ID!
+  numSwaps: BigInt
+  swaps: [Swap!] @derivedFrom(field: "trader")
+  tokenSwapTotals: [UserTokenSwapTotal!] @derivedFrom(field: "user")
 }
