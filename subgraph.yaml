@@ -153,16 +153,16 @@ templates:
         - name: SmartTokenContract
           file: ./abis/SmartTokenContract.json
       eventHandlers:
-        - event: NewSmartToken(address)
-          handler: handleNewSmartToken
-        - event: Issuance(uint256)
-          handler: handleIssuance
-        - event: Destruction(uint256)
-          handler: handleDestruction
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-        - event: Approval(indexed address,indexed address,uint256)
-          handler: handleApproval
+        # - event: NewSmartToken(address)
+        #   handler: handleNewSmartToken
+        # - event: Issuance(uint256)
+        #   handler: handleIssuance
+        # - event: Destruction(uint256)
+        #   handler: handleDestruction
+        # - event: Transfer(indexed address,indexed address,uint256)
+        #   handler: handleTransfer
+        # - event: Approval(indexed address,indexed address,uint256)
+        #   handler: handleApproval
         - event: OwnerUpdate(address,address)
           handler: handleSmartTokenOwnerUpdate
       file: ./src/mappings/smartToken.ts
@@ -181,9 +181,9 @@ templates:
       abis:
         - name: ERC20Contract
           file: ./abis/ERC20Contract.json
-      eventHandlers:
-        - event: Approval(indexed address,indexed address,uint256)
-          handler: handleApproval
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
+      # eventHandlers:
+      #   - event: Approval(indexed address,indexed address,uint256)
+      #     handler: handleApproval
+      #   - event: Transfer(indexed address,indexed address,uint256)
+      #     handler: handleTransfer
       file: ./src/mappings/erc20.ts

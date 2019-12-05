@@ -36,6 +36,7 @@ type Converter @entity {
   maxConversionFee: BigInt
   bntBalance: BigInt
   tokenBalance: BigInt
+  tokenSwapTotals: [ConverterTokenSwapTotal!] @derivedFrom(field: "converter")
 }
 
 type QuickBuyPathMember @entity {
@@ -59,6 +60,7 @@ type Token @entity {
   shortestQuickBuyPath: [QuickBuyPathMember!]
   converterWithShortestQuickBuyPath: Converter
   owner: String
+  tokenSwapTotals: [TokenSwapTotal!] @derivedFrom(field: "toToken")
 }
 
 type Connector @entity {
@@ -97,6 +99,23 @@ type Transaction @entity {
 type UserTokenSwapTotal @entity {
   id: ID! # Concatenation of user, fromToken, and toToken addresses
   user: User!
+  fromToken: Token!
+  toToken: Token!
+  totalAmountPurchased: BigInt
+  totalAmountReturned: BigInt
+}
+
+type TokenSwapTotal @entity {
+  id: ID! # Concatenation of fromToken and toToken addresses
+  fromToken: Token!
+  toToken: Token!
+  totalAmountPurchased: BigInt
+  totalAmountReturned: BigInt
+}
+
+type ConverterTokenSwapTotal @entity {
+  id: ID! # Concatenation of converter, fromToken, and toToken addresses
+  converter: Converter!
   fromToken: Token!
   toToken: Token!
   totalAmountPurchased: BigInt

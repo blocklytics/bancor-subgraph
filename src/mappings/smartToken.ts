@@ -12,22 +12,22 @@ import {
   } from "../../generated/schema"
 
 // Smart Token events
-export function handleNewSmartToken(event: NewSmartToken): void {
-    // let smartToken = new SmartToken(event.address.toHex());
-    // let contract = SmartTokenContract.bind(event.address);
-    // smartToken.targetTokenName = contract.name();
-    // smartToken.targetTokenSymbol = contract.symbol();
-    // smartToken.targetTokenDecimals = contract.decimals();
-    // smartToken.save()
-}
+// export function handleNewSmartToken(event: NewSmartToken): void {
+//     // let smartToken = new SmartToken(event.address.toHex());
+//     // let contract = SmartTokenContract.bind(event.address);
+//     // smartToken.targetTokenName = contract.name();
+//     // smartToken.targetTokenSymbol = contract.symbol();
+//     // smartToken.targetTokenDecimals = contract.decimals();
+//     // smartToken.save()
+// }
 
-export function handleIssuance(event: Issuance): void {}
+// export function handleIssuance(event: Issuance): void {}
 
-export function handleDestruction(event: Destruction): void {}
+// export function handleDestruction(event: Destruction): void {}
 
-export function handleTransfer(event: Transfer): void {}
+// export function handleTransfer(event: Transfer): void {}
 
-export function handleApproval(event: Approval): void {}
+// export function handleApproval(event: Approval): void {}
 
 export function handleSmartTokenOwnerUpdate(event: SmartTokenOwnerUpdate): void {
   let smartTokenEntity = new Token(event.address.toHex());

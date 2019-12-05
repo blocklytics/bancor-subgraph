@@ -15,7 +15,9 @@ import {
     Swap,
     Transaction,
     User, 
-    UserTokenSwapTotal
+    UserTokenSwapTotal,
+    TokenSwapTotal,
+    ConverterTokenSwapTotal
   } from "../../generated/schema"
 
 // Converter events
@@ -30,7 +32,7 @@ export function handleConversion(event: Conversion): void {
         trader = new User(event.params._trader.toHex());
     }
     let fromTokenContract = ERC20Contract.bind(event.params._fromToken);
-    let toTokenContract = ERC20Contract.bind(event.params._fromToken);
+    let toTokenContract = ERC20Contract.bind(event.params._toToken);
     let fromTokenNameResult =  fromTokenContract.try_name();
     if(!fromTokenNameResult.reverted) {
       fromToken.name = fromTokenNameResult.value;
@@ -69,11 +71,22 @@ export function handleConversion(event: Conversion): void {
     transaction.gasUsed = event.transaction.gasUsed;
     transaction.gasPrice = event.transaction.gasPrice;
     trader.numSwaps = trader.numSwaps.plus(BigInt.fromI32(1));
-    let tokenSwapId = event.params._trader.toHex() + "-" + event.params._fromToken.toHex() + "-" + event.params._toToken.toHex();
-    let tokenSwapTotal = UserTokenSwapTotal.load(tokenSwapId);
+    let userTokenSwapId = event.params._trader.toHex() + "-" + event.params._fromToken.toHex() + "-" + event.params._toToken.toHex();
+    let userTokenSwapTotal = UserTokenSwapTotal.load(userTokenSwapId);
+    if(userTokenSwapTotal == null) {
+        userTokenSwapTotal = new UserTokenSwapTotal(userTokenSwapId);
+        userTokenSwapTotal.user = event.params._trader.toHex();
+        userTokenSwapTotal.fromToken = event.params._fromToken.toHex();
+        userTokenSwapTotal.toToken = event.params._toToken.toHex();
+        userTokenSwapTotal.totalAmountPurchased = BigInt.fromI32(0);
+        userTokenSwapTotal.totalAmountReturned = BigInt.fromI32(0);
+    }
+    userTokenSwapTotal.totalAmountPurchased = userTokenSwapTotal.totalAmountPurchased.plus(event.params._amount);
+    userTokenSwapTotal.totalAmountReturned = userTokenSwapTotal.totalAmountReturned.plus(event.params._return);
+    let tokenSwapId = event.params._fromToken.toHex() + "-" + event.params._toToken.toHex();
+    let tokenSwapTotal = TokenSwapTotal.load(tokenSwapId);
     if(tokenSwapTotal == null) {
-        tokenSwapTotal = new UserTokenSwapTotal(tokenSwapId);
-        tokenSwapTotal.user = event.params._trader.toHex();
+        tokenSwapTotal = new TokenSwapTotal(tokenSwapId);
         tokenSwapTotal.fromToken = event.params._fromToken.toHex();
         tokenSwapTotal.toToken = event.params._toToken.toHex();
         tokenSwapTotal.totalAmountPurchased = BigInt.fromI32(0);
@@ -81,12 +94,26 @@ export function handleConversion(event: Conversion): void {
     }
     tokenSwapTotal.totalAmountPurchased = tokenSwapTotal.totalAmountPurchased.plus(event.params._amount);
     tokenSwapTotal.totalAmountReturned = tokenSwapTotal.totalAmountReturned.plus(event.params._return);
+    let converterTokenSwapId = event.address.toHex() + "-" + event.params._fromToken.toHex() + "-" + event.params._toToken.toHex();
+    let converterTokenSwapTotal = ConverterTokenSwapTotal.load(converterTokenSwapId);
+    if(converterTokenSwapTotal == null) {
+        converterTokenSwapTotal = new ConverterTokenSwapTotal(converterTokenSwapId);
+        converterTokenSwapTotal.fromToken = event.params._fromToken.toHex();
+        converterTokenSwapTotal.toToken = event.params._toToken.toHex();
+        converterTokenSwapTotal.totalAmountPurchased = BigInt.fromI32(0);
+        converterTokenSwapTotal.totalAmountReturned = BigInt.fromI32(0);
+        converterTokenSwapTotal.converter = event.address.toHex();
+    }
+    converterTokenSwapTotal.totalAmountPurchased = converterTokenSwapTotal.totalAmountPurchased.plus(event.params._amount);
+    converterTokenSwapTotal.totalAmountReturned = converterTokenSwapTotal.totalAmountReturned.plus(event.params._return);
     trader.save();
     transaction.save();
     fromToken.save();
     toToken.save();
     swap.save();
+    userTokenSwapTotal.save();
     tokenSwapTotal.save();
+    converterTokenSwapTotal.save();
   }
   
   export function handlePriceDataUpdate(event: PriceDataUpdate): void {

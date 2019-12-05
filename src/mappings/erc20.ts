@@ -9,6 +9,6 @@ import {
   } from "../../generated/schema"
 
 // ERC20 Token events
-export function handleTransfer(event: Transfer): void {}
+// export function handleTransfer(event: Transfer): void {}
 
-export function handleApproval(event: Approval): void {}
+// export function handleApproval(event: Approval): void {}
