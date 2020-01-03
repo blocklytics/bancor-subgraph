@@ -1,9 +1,11 @@
 import { BigInt, log } from "@graphprotocol/graph-ts"
 import {
+    ConverterContract,
     Conversion,
     ConversionFeeUpdate,
     ManagerUpdate,
     PriceDataUpdate,
+    UpgradeCall,
     OwnerUpdate as ConverterOwnerUpdate
   } from "../../generated/templates/ConverterContract/ConverterContract"
   import {
@@ -17,19 +19,20 @@ import {
     User, 
     UserTokenSwapTotal,
     TokenSwapTotal,
+    ConverterTokenBalance,
     ConverterTokenSwapTotal
   } from "../../generated/schema"
 
 // Converter events
 export function handleConversion(event: Conversion): void {
-    log.debug("Conversion event triggered: {}, From Token: {}, To Token: {}, Amount: {}", [event.transaction.hash.toHex() + "-" + event.logIndex.toString() + "-" + event.params._trader.toHex(), event.params._fromToken.toHex(), event.params._toToken.toHex(), event.params._amount.toString()])
-    let swap = new Swap(event.transaction.hash.toHex() + "-" + event.logIndex.toString() + "-" + event.params._trader.toHex());
+    log.debug("Conversion event triggered: {}, From Token: {}, To Token: {}, Amount: {}", [event.transaction.hash.toHex() + "-" + event.logIndex.toString() + "-" + event.transaction.from.toHex(), event.params._fromToken.toHex(), event.params._toToken.toHex(), event.params._amount.toString()])
+    let swap = new Swap(event.transaction.hash.toHex() + "-" + event.logIndex.toString() + "-" + event.transaction.from.toHex());
     let fromToken = new Token(event.params._fromToken.toHex());
     let toToken = new Token(event.params._toToken.toHex());
     let transaction = new Transaction(event.transaction.hash.toHex());
-    let trader = User.load(event.params._trader.toHex());
+    let trader = User.load(event.transaction.from.toHex());
     if(trader == null) {
-        trader = new User(event.params._trader.toHex());
+        trader = new User(event.transaction.from.toHex());
     }
     let fromTokenContract = ERC20Contract.bind(event.params._fromToken);
     let toTokenContract = ERC20Contract.bind(event.params._toToken);
@@ -63,19 +66,20 @@ export function handleConversion(event: Conversion): void {
     swap.amountPurchased = event.params._amount;
     swap.amountReturned = event.params._return;
     swap.conversionFee = event.params._conversionFee;
-    swap.trader = event.params._trader.toHex();
+    swap.trader = event.transaction.from.toHex();
     swap.transaction = event.transaction.hash.toHex();
     swap.logIndex = event.logIndex.toI32();
+    swap.timestamp = event.block.timestamp;
     transaction.blockNumber = event.block.number;
     transaction.blockTimestamp = event.block.timestamp;
     transaction.gasUsed = event.transaction.gasUsed;
     transaction.gasPrice = event.transaction.gasPrice;
     trader.numSwaps = trader.numSwaps.plus(BigInt.fromI32(1));
-    let userTokenSwapId = event.params._trader.toHex() + "-" + event.params._fromToken.toHex() + "-" + event.params._toToken.toHex();
+    let userTokenSwapId = event.transaction.from.toHex() + "-" + event.params._fromToken.toHex() + "-" + event.params._toToken.toHex();
     let userTokenSwapTotal = UserTokenSwapTotal.load(userTokenSwapId);
     if(userTokenSwapTotal == null) {
         userTokenSwapTotal = new UserTokenSwapTotal(userTokenSwapId);
-        userTokenSwapTotal.user = event.params._trader.toHex();
+        userTokenSwapTotal.user = event.transaction.from.toHex();
         userTokenSwapTotal.fromToken = event.params._fromToken.toHex();
         userTokenSwapTotal.toToken = event.params._toToken.toHex();
         userTokenSwapTotal.totalAmountPurchased = BigInt.fromI32(0);
@@ -118,13 +122,32 @@ export function handleConversion(event: Conversion): void {
   
   export function handlePriceDataUpdate(event: PriceDataUpdate): void {
     log.debug("PriceDataUpdate emitted for converter: {}, Token Supply: {}, Connector Balance: {}, Connector Weight {}", [event.address.toHex(), event.params._tokenSupply.toString(), event.params._connectorBalance.toString(), event.params._connectorWeight.toString()])
-    let converterEntity = Converter.load(event.address.toHex());
-    if(converterEntity === null) {
-      converterEntity = new Converter(event.address.toHex());
-    }
-    converterEntity.bntBalance = event.params._tokenSupply;
-    converterEntity.tokenBalance = event.params._connectorBalance;
+    let converterEntity = new Converter(event.address.toHex());
     converterEntity.weight = event.params._connectorWeight;
+    let converterAddress = event.address;
+    let converterContract = ConverterContract.bind(converterAddress);
+    let converterToken = converterContract.token();
+    let tokenAddress = event.params._connectorToken;
+
+    let converterTokenBalanceID = converterAddress.toHex() + "-" + tokenAddress.toHex();
+    let converterTokenBalance = ConverterTokenBalance.load(converterTokenBalanceID);
+    if(converterTokenBalance === null) {
+      converterTokenBalance = new ConverterTokenBalance(converterTokenBalanceID);
+    }
+    converterTokenBalance.converter = converterAddress.toHex();
+    converterTokenBalance.token = tokenAddress.toHex();
+    converterTokenBalance.balance = event.params._connectorBalance;
+
+    let converterSmartTokenBalanceID = converterAddress.toHex() + "-" + converterToken.toHex();
+    let converterSmartTokenBalance = ConverterTokenBalance.load(converterSmartTokenBalanceID);
+    if(converterSmartTokenBalance === null) {
+      converterSmartTokenBalance = new ConverterTokenBalance(converterSmartTokenBalanceID);
+    }
+    converterSmartTokenBalance.converter = converterAddress.toHex();
+    converterSmartTokenBalance.token = converterToken.toHex();
+    converterSmartTokenBalance.balance = event.params._tokenSupply;
+    converterTokenBalance.save();
+    converterSmartTokenBalance.save();
     converterEntity.save()
   }
   
@@ -146,4 +169,19 @@ export function handleConversion(event: Conversion): void {
     let converterEntity = Converter.load(event.address.toHex());
     converterEntity.owner = event.params._newOwner.toHex();
     converterEntity.save();
+  }
+
+  export function handleUpgrade(call: UpgradeCall): void {
+    let converterAddress = call.to;
+    let converterEntity = Converter.load(converterAddress.toHex());
+    let converterTokenBalances = converterEntity.tokenBalances as Array<string>;
+    for(var i = 0; i < converterTokenBalances.length; i++) {
+      let converterTokenBalanceID = converterTokenBalances[i];
+      let converterTokenBalanceEntity = ConverterTokenBalance.load(converterTokenBalanceID);
+      if (converterTokenBalanceEntity == null) {
+        converterTokenBalanceEntity = new ConverterTokenBalance(converterTokenBalanceID);
+      }
+      converterTokenBalanceEntity.balance = BigInt.fromI32(0);
+      converterTokenBalanceEntity.save();
+    }
   }

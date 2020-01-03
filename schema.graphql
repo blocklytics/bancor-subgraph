@@ -34,8 +34,7 @@ type Converter @entity {
   weight: BigInt
   # maxWeight: BigInt
   maxConversionFee: BigInt
-  bntBalance: BigInt
-  tokenBalance: BigInt
+  tokenBalances: [ConverterTokenBalance!] @derivedFrom(field: "converter")
   tokenSwapTotals: [ConverterTokenSwapTotal!] @derivedFrom(field: "converter")
 }
 
@@ -61,6 +60,7 @@ type Token @entity {
   converterWithShortestQuickBuyPath: Converter
   owner: String
   tokenSwapTotals: [TokenSwapTotal!] @derivedFrom(field: "toToken")
+  currentRegistry: ConverterRegistry
 }
 
 type Connector @entity {
@@ -75,7 +75,7 @@ type Connector @entity {
 }
 
 type Swap @entity {
-  id: ID!
+  id: ID! # Concatenation of transaction hash + "-" + logIndex + "-" + trader address (User.id)
   fromToken: Token!
   toToken: Token!
   amountPurchased: BigInt
@@ -84,6 +84,7 @@ type Swap @entity {
   converterUsed: Converter
   transaction: Transaction
   trader: User
+  timestamp: BigInt
   logIndex: Int
 }
 
@@ -122,9 +123,24 @@ type ConverterTokenSwapTotal @entity {
   totalAmountReturned: BigInt
 }
 
+type ConverterTokenBalance @entity {
+  id: ID! # Concatenation of converter address and token address
+  converter: Converter
+  token: Token
+  balance: BigInt
+}
+
+type UserSmartTokenBalance @entity {
+  id: ID! # Concatenation of user and smartToken address
+  user: User!
+  smartToken: Token
+  balance: BigInt
+}
+
 type User @entity {
   id: ID!
   numSwaps: BigInt
   swaps: [Swap!] @derivedFrom(field: "trader")
   tokenSwapTotals: [UserTokenSwapTotal!] @derivedFrom(field: "user")
+  smartTokenBalances: [UserSmartTokenBalance!] @derivedFrom (field: "user")
 }

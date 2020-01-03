@@ -493,37 +493,20 @@ export class Converter extends Entity {
     }
   }
 
-  get bntBalance(): BigInt | null {
-    let value = this.get("bntBalance");
+  get tokenBalances(): Array<string> | null {
+    let value = this.get("tokenBalances");
     if (value === null) {
       return null;
     } else {
-      return value.toBigInt();
+      return value.toStringArray();
     }
   }
 
-  set bntBalance(value: BigInt | null) {
+  set tokenBalances(value: Array<string> | null) {
     if (value === null) {
-      this.unset("bntBalance");
+      this.unset("tokenBalances");
     } else {
-      this.set("bntBalance", Value.fromBigInt(value as BigInt));
-    }
-  }
-
-  get tokenBalance(): BigInt | null {
-    let value = this.get("tokenBalance");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set tokenBalance(value: BigInt | null) {
-    if (value === null) {
-      this.unset("tokenBalance");
-    } else {
-      this.set("tokenBalance", Value.fromBigInt(value as BigInt));
+      this.set("tokenBalances", Value.fromStringArray(value as Array<string>));
     }
   }
 
@@ -852,6 +835,23 @@ export class Token extends Entity {
       );
     }
   }
+
+  get currentRegistry(): string | null {
+    let value = this.get("currentRegistry");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set currentRegistry(value: string | null) {
+    if (value === null) {
+      this.unset("currentRegistry");
+    } else {
+      this.set("currentRegistry", Value.fromString(value as string));
+    }
+  }
 }
 
 export class Connector extends Entity {
@@ -1127,6 +1127,23 @@ export class Swap extends Entity {
       this.unset("trader");
     } else {
       this.set("trader", Value.fromString(value as string));
+    }
+  }
+
+  get timestamp(): BigInt | null {
+    let value = this.get("timestamp");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set timestamp(value: BigInt | null) {
+    if (value === null) {
+      this.unset("timestamp");
+    } else {
+      this.set("timestamp", Value.fromBigInt(value as BigInt));
     }
   }
 
@@ -1529,6 +1546,174 @@ export class ConverterTokenSwapTotal extends Entity {
   }
 }
 
+export class ConverterTokenBalance extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id !== null,
+      "Cannot save ConverterTokenBalance entity without an ID"
+    );
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save ConverterTokenBalance entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("ConverterTokenBalance", id.toString(), this);
+  }
+
+  static load(id: string): ConverterTokenBalance | null {
+    return store.get(
+      "ConverterTokenBalance",
+      id
+    ) as ConverterTokenBalance | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get converter(): string | null {
+    let value = this.get("converter");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set converter(value: string | null) {
+    if (value === null) {
+      this.unset("converter");
+    } else {
+      this.set("converter", Value.fromString(value as string));
+    }
+  }
+
+  get token(): string | null {
+    let value = this.get("token");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set token(value: string | null) {
+    if (value === null) {
+      this.unset("token");
+    } else {
+      this.set("token", Value.fromString(value as string));
+    }
+  }
+
+  get balance(): BigInt | null {
+    let value = this.get("balance");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set balance(value: BigInt | null) {
+    if (value === null) {
+      this.unset("balance");
+    } else {
+      this.set("balance", Value.fromBigInt(value as BigInt));
+    }
+  }
+}
+
+export class UserSmartTokenBalance extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id !== null,
+      "Cannot save UserSmartTokenBalance entity without an ID"
+    );
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save UserSmartTokenBalance entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("UserSmartTokenBalance", id.toString(), this);
+  }
+
+  static load(id: string): UserSmartTokenBalance | null {
+    return store.get(
+      "UserSmartTokenBalance",
+      id
+    ) as UserSmartTokenBalance | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get user(): string {
+    let value = this.get("user");
+    return value.toString();
+  }
+
+  set user(value: string) {
+    this.set("user", Value.fromString(value));
+  }
+
+  get smartToken(): string | null {
+    let value = this.get("smartToken");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set smartToken(value: string | null) {
+    if (value === null) {
+      this.unset("smartToken");
+    } else {
+      this.set("smartToken", Value.fromString(value as string));
+    }
+  }
+
+  get balance(): BigInt | null {
+    let value = this.get("balance");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set balance(value: BigInt | null) {
+    if (value === null) {
+      this.unset("balance");
+    } else {
+      this.set("balance", Value.fromBigInt(value as BigInt));
+    }
+  }
+}
+
 export class User extends Entity {
   constructor(id: string) {
     super();
@@ -1608,6 +1793,26 @@ export class User extends Entity {
     } else {
       this.set(
         "tokenSwapTotals",
+        Value.fromStringArray(value as Array<string>)
+      );
+    }
+  }
+
+  get smartTokenBalances(): Array<string> | null {
+    let value = this.get("smartTokenBalances");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set smartTokenBalances(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("smartTokenBalances");
+    } else {
+      this.set(
+        "smartTokenBalances",
         Value.fromStringArray(value as Array<string>)
       );
     }

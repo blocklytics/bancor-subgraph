@@ -66,6 +66,7 @@ export function handleConverterAddition(event: ConverterAddition): void {
 
     let smartTokenAddress = converterContract.token();
     SmartTokenTemplate.create(smartTokenAddress);
+    log.debug("Smart Token template created: {}", [smartTokenAddress.toHex()]);
 
     let smartTokenContract = SmartTokenContract.bind(smartTokenAddress);
     let smartTokenEntity = new Token(smartTokenAddress.toHex());
@@ -123,6 +124,7 @@ export function handleConverterAddition(event: ConverterAddition): void {
     smartTokenConverters.push(converterAddress.toHex());
     log.debug("Smart Token Converters: {}", [smartTokenConverters.toString()])
     smartTokenEntity.converters = smartTokenConverters;
+    smartTokenEntity.currentRegistry = event.address.toHex();
     let smartTokenVersionResult = smartTokenContract.try_version();
     if (!smartTokenVersionResult.reverted) {
         smartTokenEntity.version = smartTokenVersionResult.value;
