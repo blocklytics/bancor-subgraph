@@ -23,6 +23,20 @@
 }, {
     "constant": true,
     "inputs": [{
+        "name": "_smartTokens",
+        "type": "address[]"
+    }],
+    "name": "getConvertersBySmartTokens",
+    "outputs": [{
+        "name": "",
+        "type": "address[]"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [{
         "name": "_value",
         "type": "address"
     }],
@@ -154,6 +168,23 @@
     "outputs": [{
         "name": "",
         "type": "address[]"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [{
+        "name": "_reserveTokens",
+        "type": "address[]"
+    }, {
+        "name": "_reserveRatios",
+        "type": "uint256[]"
+    }],
+    "name": "getLiquidityPoolByReserveConfig",
+    "outputs": [{
+        "name": "",
+        "type": "address"
     }],
     "payable": false,
     "stateMutability": "view",
