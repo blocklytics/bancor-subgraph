@@ -4,7 +4,7 @@ before_script:
     - apt-get update -qq && apt-get install -y libsecret-1-dev
     - yarn global add keytar
     - yarn global add @graphprotocol/graph-cli
-    - graph auth https://api.thegraph.com/deploy/ $GRAPH_ACCESS_TOKEN 
+    - graph auth https://api.thegraph.com/deploy/ --access-token $GRAPH_ACCESS_TOKEN 
 
 stages:
     - build
