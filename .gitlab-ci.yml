@@ -27,6 +27,8 @@ codegen:
 build:
     stage: build
     script:
+        - pwd
+        - ls
         - yarn build
 
 deploy:
