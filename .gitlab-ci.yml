@@ -2,7 +2,7 @@ image: "node:latest"
 
 before_script:
     - yarn global add @graphprotocol/graph-cli
-    - graph auth https://api.thegraph.com/deploy/$GRAPH_ACCESS_TOKEN 
+    - graph auth https://api.thegraph.com/deploy/ $GRAPH_ACCESS_TOKEN 
 
 stages:
     - build
