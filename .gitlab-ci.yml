@@ -1,10 +1,7 @@
 image: "node:latest"
 
 before_script:
-    - apt-get update -qq && apt-get install -y libsecret-1-dev
-    - yarn global add keytar
     - yarn global add @graphprotocol/graph-cli
-    - graph auth https://api.thegraph.com/deploy/ --access-token $GRAPH_ACCESS_TOKEN 
 
 stages:
     - build
@@ -35,4 +32,4 @@ build:
 deploy:
     stage: deploy
     script:
-        - yarn deploy-staging
+        - graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ $SUBGRAPH_NAME --access-token $GRAPH_ACCESS_TOKEN
