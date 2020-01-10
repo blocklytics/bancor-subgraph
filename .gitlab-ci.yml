@@ -2,7 +2,7 @@ image: "node:latest"
 
 before_script:
     - apt-get update -qq && apt-get install -y libsecret-1-dev
-    - yarn install keytar
+    - yarn global add keytar
     - yarn global add @graphprotocol/graph-cli
     - graph auth https://api.thegraph.com/deploy/ $GRAPH_ACCESS_TOKEN 
 
