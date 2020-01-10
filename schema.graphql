@@ -61,6 +61,8 @@ type Token @entity {
   owner: String
   tokenSwapTotals: [TokenSwapTotal!] @derivedFrom(field: "toToken")
   currentRegistry: ConverterRegistry
+  addedToRegistryBlockNumber: BigInt
+  addedToRegistryTransactionHash: String
 }
 
 type Connector @entity {

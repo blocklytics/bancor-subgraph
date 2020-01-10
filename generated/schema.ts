@@ -852,6 +852,43 @@ export class Token extends Entity {
       this.set("currentRegistry", Value.fromString(value as string));
     }
   }
+
+  get addedToRegistryBlockNumber(): BigInt | null {
+    let value = this.get("addedToRegistryBlockNumber");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set addedToRegistryBlockNumber(value: BigInt | null) {
+    if (value === null) {
+      this.unset("addedToRegistryBlockNumber");
+    } else {
+      this.set("addedToRegistryBlockNumber", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get addedToRegistryTransactionHash(): string | null {
+    let value = this.get("addedToRegistryTransactionHash");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set addedToRegistryTransactionHash(value: string | null) {
+    if (value === null) {
+      this.unset("addedToRegistryTransactionHash");
+    } else {
+      this.set(
+        "addedToRegistryTransactionHash",
+        Value.fromString(value as string)
+      );
+    }
+  }
 }
 
 export class Connector extends Entity {

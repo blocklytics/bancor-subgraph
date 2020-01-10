@@ -70,6 +70,8 @@ export function handleConverterAddition(event: ConverterAddition): void {
 
     let smartTokenContract = SmartTokenContract.bind(smartTokenAddress);
     let smartTokenEntity = new Token(smartTokenAddress.toHex());
+    smartTokenEntity.addedToRegistryBlockNumber = event.block.number;
+    smartTokenEntity.addedToRegistryTransactionHash = event.transaction.hash.toHex();
     smartTokenEntity.isSmartToken = true;
 
     let connectorTokenAddress = event.params._token;

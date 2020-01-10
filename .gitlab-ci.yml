@@ -1,0 +1,36 @@
+image: "node:latest"
+
+before_script:
+    - yarn global add @graphprotocol/graph-cli
+    - graph auth https://api.thegraph.com/deploy/$GRAPH_ACCESS_TOKEN 
+
+stages:
+    - build
+    - deploy
+
+cache:
+    paths:
+        - node_modules/
+
+install_dependencies:
+    stage: build
+    script:
+        - npm install
+    artifacts:
+        paths:
+        - node_modules/
+
+codegen:
+    stage: build
+    script:
+        - yarn codegen
+
+build:
+    stage: build
+    script:
+        - yarn build
+
+deploy:
+    stage: deploy
+    script:
+        - yarn deploy-staging
