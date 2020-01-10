@@ -4,21 +4,16 @@ before_script:
     - yarn global add @graphprotocol/graph-cli
 
 stages:
-    - build
     - deploy
 
 cache:
     paths:
         - node_modules/
 
-build:
-    stage: build
+deploy:
+    stage: deploy
     script:
         - yarn install
         - yarn codegen
         - yarn build
-
-deploy:
-    stage: deploy
-    script:
         - graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ $SUBGRAPH_NAME --access-token $GRAPH_ACCESS_TOKEN
