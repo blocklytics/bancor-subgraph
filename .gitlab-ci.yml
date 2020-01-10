@@ -14,7 +14,7 @@ cache:
 install_dependencies:
     stage: build
     script:
-        - npm install
+        - yarn install
     artifacts:
         paths:
         - node_modules/
