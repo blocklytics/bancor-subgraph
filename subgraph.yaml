@@ -270,8 +270,8 @@ templates:
       eventHandlers:
         # - event: NewSmartToken(address)
         #   handler: handleNewSmartToken
-        - event: Issuance(uint256)
-          handler: handleIssuance
+        # - event: Issuance(uint256)
+        #   handler: handleIssuance
         # - event: Destruction(uint256)
         #   handler: handleDestruction
         - event: Transfer(indexed address,indexed address,uint256)
