@@ -65,7 +65,7 @@ export function handleSmartTokenAdded(event: SmartTokenAdded): void {
         log.debug("Converter {}, QBP Length: {}, QBP: {}", [converterAddress.toHex(), converterQBPLength.toString(), converterQuickBuyPath.toString()])
     }
     let smartTokenEntity = new Token(smartTokenAddress.toHex());
-    // smartTokenEntity.addedToRegistryBlockNumber = event.block.number;
+    smartTokenEntity.addedToRegistryBlockNumber = event.block.number;
     smartTokenEntity.addedToRegistryTransactionHash = event.transaction.hash.toHex();
     smartTokenEntity.isSmartToken = true;
 

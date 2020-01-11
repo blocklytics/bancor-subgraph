@@ -14,20 +14,6 @@
         "type": "function"
     },
     {
-        "constant": true,
-        "inputs": [],
-        "name": "name",
-        "outputs": [
-            {
-                "name": "",
-                "type": "bytes32"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "constant": false,
         "inputs": [
             {
@@ -107,18 +93,6 @@
     },
     {
         "constant": true,
-        "inputs": [],
-        "name": "DECIMALS",
-        "outputs": [{
-            "name": "",
-            "type": "uint8"
-        }],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
         "inputs": [
             {
                 "name": "_owner",
@@ -144,20 +118,6 @@
             {
                 "name": "",
                 "type": "string"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "symbol",
-        "outputs": [
-            {
-                "name": "",
-                "type": "bytes32"
             }
         ],
         "payable": false,

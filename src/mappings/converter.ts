@@ -39,57 +39,63 @@ export function handleConversion(event: Conversion): void {
     let fromTokenNameResult =  fromTokenContract.try_name();
     if(!fromTokenNameResult.reverted) {
       fromToken.name = fromTokenNameResult.value;
-    } else {
-      let fromTokenNameResultBytes = fromTokenContract.try_name1();
-      if(!fromTokenNameResultBytes.reverted) {
-        fromToken.name = fromTokenNameResultBytes.value.toHex();
-      }
-    }
+    } 
+    // else {
+    //   let fromTokenNameResultBytes = fromTokenContract.try_name1();
+    //   if(!fromTokenNameResultBytes.reverted) {
+    //     fromToken.name = fromTokenNameResultBytes.value.toHex();
+    //   }
+    // }
     let fromTokenSymbolResult = fromTokenContract.try_symbol();
     if(!fromTokenSymbolResult.reverted) {
         fromToken.symbol = fromTokenSymbolResult.value;
-    } else {
-      let fromTokenSymbolResultBytes = fromTokenContract.try_symbol1();
-      if(!fromTokenSymbolResultBytes.reverted) {
-        fromToken.symbol = fromTokenSymbolResultBytes.value.toHex();
-      }
-    }
+    } 
+    // else {
+    //   let fromTokenSymbolResultBytes = fromTokenContract.try_symbol1();
+    //   if(!fromTokenSymbolResultBytes.reverted) {
+    //     fromToken.symbol = fromTokenSymbolResultBytes.value.toHex();
+    //   }
+    // }
     let fromTokenDecimalsResult = fromTokenContract.try_decimals();
     if(!fromTokenDecimalsResult.reverted) {
         fromToken.decimals = fromTokenDecimalsResult.value;
-    } else {
-      fromTokenDecimalsResult = fromTokenContract.try_DECIMALS();
-      if(!fromTokenDecimalsResult.reverted) {
-        fromToken.decimals = fromTokenDecimalsResult.value;
-      }
-    }
+    } 
+    // else {
+    //   fromTokenDecimalsResult = fromTokenContract.try_DECIMALS();
+    //   if(!fromTokenDecimalsResult.reverted) {
+    //     fromToken.decimals = fromTokenDecimalsResult.value;
+    //   }
+    // }
     let toTokenNameResult =  toTokenContract.try_name();
     if(!toTokenNameResult.reverted) {
       toToken.name = toTokenNameResult.value;
-    } else {
-      let toTokenNameResultBytes = toTokenContract.try_name1();
-      if(!toTokenNameResultBytes.reverted) {
-        toToken.name = toTokenNameResultBytes.value.toHex();
-      }
-    }
+    } 
+    // else {
+    //   let toTokenNameResultBytes = toTokenContract.try_name1();
+    //   if(!toTokenNameResultBytes.reverted) {
+    //     toToken.name = toTokenNameResultBytes.value.toHex();
+    //   }
+    // }
     let toTokenSymbolResult = toTokenContract.try_symbol();
     if(!toTokenSymbolResult.reverted) {
         toToken.symbol = toTokenSymbolResult.value;
-    } else {
-      let toTokenSymbolResultBytes = toTokenContract.try_symbol1();
-      if(!toTokenSymbolResultBytes.reverted) {
-        toToken.symbol = toTokenSymbolResultBytes.value.toHex();
-      }
-    }
+    } 
+    // else {
+    //   let toTokenSymbolResultBytes = toTokenContract.try_symbol1();
+    //   if(!toTokenSymbolResultBytes.reverted) {
+    //     toToken.symbol = toTokenSymbolResultBytes.value.toHex();
+    //   }
+    // }
     let toTokenDecimalsResult = toTokenContract.try_decimals();
     if(!toTokenDecimalsResult.reverted) {
         toToken.decimals = toTokenDecimalsResult.value;
-    } else {
-      toTokenDecimalsResult = toTokenContract.try_DECIMALS();
-      if(!toTokenDecimalsResult.reverted) {
-        toToken.decimals = toTokenDecimalsResult.value;
-      }
-    }
+    } 
+    // else {
+    //   toTokenDecimalsResult = toTokenContract.try_DECIMALS();
+    //   if(!toTokenDecimalsResult.reverted) {
+    //     toToken.decimals = toTokenDecimalsResult.value;
+    //   }
+    // }
     swap.fromToken = event.params._fromToken.toHex();
     swap.toToken = event.params._toToken.toHex();
     swap.converterUsed = event.address.toHex();
