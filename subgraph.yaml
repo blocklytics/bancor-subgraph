@@ -201,6 +201,10 @@ dataSources:
       abis:
         - name: ConverterUpgraderContract
           file: ./abis/ConverterUpgraderContract.json
+        - name: ConverterContract
+          file: ./abis/ConverterContract.json
+        - name: ERC20Contract
+          file: ./abis/ERC20Contract.json
       eventHandlers:
         - event: ConverterUpgrade(indexed address,indexed address)
           handler: handleConverterUpgrade
