@@ -15,13 +15,14 @@ export function handleConverterUpgrade(event: ConverterUpgrade): void {
     let newConverterAddress = event.params._newConverter;
 
     let oldConverterEntity = Converter.load(oldConverterAddress.toHex());
+
     let newConverterEntity = Converter.load(newConverterAddress.toHex());
     if(newConverterEntity == null) {
         newConverterEntity = new Converter(newConverterAddress.toHex());
         newConverterEntity.smartToken = oldConverterEntity.smartToken;
         newConverterEntity.save();
     }
-    let oldConverterTokenBalances = oldConverterEntity.tokenBalances as string[];
+    let oldConverterTokenBalances = oldConverterEntity.tokenBalances;
     log.debug("Converter Upgrade fired: {} > {}, Old Converter Balances: {}", [oldConverterAddress.toHex(), newConverterAddress.toHex(), oldConverterTokenBalances.toString()]);
     for(var i = 0; i < oldConverterTokenBalances.length; i++) {
         let oldConverterTokenBalanceID = oldConverterTokenBalances[i];
