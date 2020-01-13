@@ -64,17 +64,10 @@ export function handleConverterAddition(event: ConverterAddition): void {
         log.debug("Converter {}, QBP Length: {}, QBP: {}", [converterAddress.toHex(), converterQBPLength.toString(), converterQuickBuyPath.toString()])
     }
 
-    let smartTokenAddress = converterContract.token();
-    SmartTokenTemplate.create(smartTokenAddress);
-    log.debug("Smart Token template created: {}", [smartTokenAddress.toHex()]);
-
-    let smartTokenContract = SmartTokenContract.bind(smartTokenAddress);
-    let smartTokenEntity = new Token(smartTokenAddress.toHex());
-    smartTokenEntity.addedToRegistryBlockNumber = event.block.number;
-    smartTokenEntity.addedToRegistryTransactionHash = event.transaction.hash.toHex();
-    smartTokenEntity.isSmartToken = true;
 
     let connectorTokenAddress = event.params._token;
+    let smartTokenAddress = converterContract.token();
+    let smartTokenType = "Liquid";
 
     let connectorTokenEntity = Token.load(connectorTokenAddress.toHex());
     if (connectorTokenEntity == null) {
@@ -105,42 +98,8 @@ export function handleConverterAddition(event: ConverterAddition): void {
     connectorTokenEntity.converters = connectorTokenConverters;
     connectorTokenEntity.save();
 
-    let smartTokenConnectorTokens = smartTokenEntity.connectorTokens || [];
-    smartTokenConnectorTokens.push(connectorTokenAddress.toHex());
-    log.debug("Smart Token Connector Tokens: {}", [smartTokenConnectorTokens.toString()])
-    smartTokenEntity.connectorTokens = smartTokenConnectorTokens;
-    let smartTokenNameResult = smartTokenContract.try_name();
-    if (!smartTokenNameResult.reverted) {
-        smartTokenEntity.name = smartTokenNameResult.value;
-    }
-    let smartTokenSymbolResult = smartTokenContract.try_symbol();
-    if (!smartTokenSymbolResult.reverted) {
-        smartTokenEntity.symbol = smartTokenSymbolResult.value;
-    }
-    let smartTokenDecimalsResult = smartTokenContract.try_decimals();
-    if (!smartTokenDecimalsResult.reverted) {
-        smartTokenEntity.decimals = smartTokenDecimalsResult.value;
-    }
-
-    let smartTokenConverters = smartTokenEntity.converters || [];
-    smartTokenConverters.push(converterAddress.toHex());
-    log.debug("Smart Token Converters: {}", [smartTokenConverters.toString()])
-    smartTokenEntity.converters = smartTokenConverters;
-    smartTokenEntity.currentRegistry = event.address.toHex();
-    let smartTokenVersionResult = smartTokenContract.try_version();
-    if (!smartTokenVersionResult.reverted) {
-        smartTokenEntity.version = smartTokenVersionResult.value;
-    }
-    let smartTokenStandardResult = smartTokenContract.try_standard();
-    if (!smartTokenStandardResult.reverted) {
-        smartTokenEntity.standard = smartTokenStandardResult.value;
-    }
-    let smartTokenTransfersEnabledResult = smartTokenContract.try_transfersEnabled();
-    if (!smartTokenTransfersEnabledResult.reverted) {
-        smartTokenEntity.transfersEnabled = smartTokenTransfersEnabledResult.value;
-    }
-
     converterEntity.smartToken = smartTokenAddress.toHex();
+    converterEntity.currentRegistry = event.address.toHex();
     let converterVersionResult = converterContract.try_version();
     if (!converterVersionResult.reverted) {
         converterEntity.version = converterVersionResult.value;
@@ -173,11 +132,57 @@ export function handleConverterAddition(event: ConverterAddition): void {
             }
         }
         if (converterConnectorTokenCountResult.value == 2) {
-            smartTokenEntity.smartTokenType = "Relay";
-        } else {
-            smartTokenEntity.smartTokenType = "Liquid";
+            smartTokenType = "Relay";
         }
     }
+
+    
+    let smartTokenContract = SmartTokenContract.bind(smartTokenAddress);
+    let smartTokenTransfersEnabledResult = smartTokenContract.try_transfersEnabled();
+    if (!smartTokenTransfersEnabledResult.reverted) {
+        SmartTokenTemplate.create(smartTokenAddress);
+        log.debug("Smart Token template created: {}", [smartTokenAddress.toHex()]);
+        let smartTokenEntity = new Token(smartTokenAddress.toHex());
+        smartTokenEntity.addedToRegistryBlockNumber = event.block.number;
+        smartTokenEntity.addedToRegistryTransactionHash = event.transaction.hash.toHex();
+        smartTokenEntity.isSmartToken = true;
+        let smartTokenConnectorTokens = smartTokenEntity.connectorTokens || [];
+        smartTokenConnectorTokens.push(connectorTokenAddress.toHex());
+        log.debug("Smart Token Connector Tokens: {}", [smartTokenConnectorTokens.toString()])
+        smartTokenEntity.connectorTokens = smartTokenConnectorTokens;
+        let smartTokenNameResult = smartTokenContract.try_name();
+        if (!smartTokenNameResult.reverted) {
+            smartTokenEntity.name = smartTokenNameResult.value;
+        }
+        let smartTokenSymbolResult = smartTokenContract.try_symbol();
+        if (!smartTokenSymbolResult.reverted) {
+            smartTokenEntity.symbol = smartTokenSymbolResult.value;
+        }
+        let smartTokenDecimalsResult = smartTokenContract.try_decimals();
+        if (!smartTokenDecimalsResult.reverted) {
+            smartTokenEntity.decimals = smartTokenDecimalsResult.value;
+        }
+
+        let smartTokenConverters = smartTokenEntity.converters || [];
+        smartTokenConverters.push(converterAddress.toHex());
+        log.debug("Smart Token Converters: {}", [smartTokenConverters.toString()])
+        smartTokenEntity.converters = smartTokenConverters;
+        smartTokenEntity.currentRegistry = event.address.toHex();
+        let smartTokenVersionResult = smartTokenContract.try_version();
+        if (!smartTokenVersionResult.reverted) {
+            smartTokenEntity.version = smartTokenVersionResult.value;
+        }
+        let smartTokenStandardResult = smartTokenContract.try_standard();
+        if (!smartTokenStandardResult.reverted) {
+            smartTokenEntity.standard = smartTokenStandardResult.value;
+        }
+        smartTokenEntity.transfersEnabled = smartTokenTransfersEnabledResult.value;
+        smartTokenEntity.smartTokenType = smartTokenType;
+        smartTokenEntity.save();
+    }
+    
+
+    
     converterEntity.connectorTokens = converterConnectorTokens;
     let converterOwnerResult = converterContract.try_owner();
     if (!converterOwnerResult.reverted) {
@@ -220,7 +225,6 @@ export function handleConverterAddition(event: ConverterAddition): void {
     log.debug("Converter Registry Connector Tokens: {}", [converterRegistryConnectorTokens.toString()]);
     converterRegistryEntity.connectorTokens = converterRegistryConnectorTokens;
     converterRegistryEntity.save();
-    smartTokenEntity.save();
     converterEntity.save();
 }
 

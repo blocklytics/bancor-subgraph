@@ -34,6 +34,7 @@ type Converter @entity {
   weight: BigInt
   # maxWeight: BigInt
   maxConversionFee: BigInt
+  currentRegistry: ConverterRegistry
   tokenBalances: [ConverterTokenBalance!] @derivedFrom(field: "converter")
   tokenSwapTotals: [ConverterTokenSwapTotal!] @derivedFrom(field: "converter")
 }

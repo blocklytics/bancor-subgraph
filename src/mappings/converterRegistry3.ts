@@ -166,6 +166,7 @@ export function handleSmartTokenAdded(event: SmartTokenAdded): void {
         smartTokenEntity.transfersEnabled = smartTokenTransfersEnabledResult.value;
     }
     converterEntity.smartToken = smartTokenAddress.toHex();
+    converterEntity.currentRegistry = event.address.toHex();
     let converterVersionResult = converterContract.try_version();
     if (!converterVersionResult.reverted) {
         converterEntity.version = converterVersionResult.value;

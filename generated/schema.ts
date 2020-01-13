@@ -493,6 +493,23 @@ export class Converter extends Entity {
     }
   }
 
+  get currentRegistry(): string | null {
+    let value = this.get("currentRegistry");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set currentRegistry(value: string | null) {
+    if (value === null) {
+      this.unset("currentRegistry");
+    } else {
+      this.set("currentRegistry", Value.fromString(value as string));
+    }
+  }
+
   get tokenBalances(): Array<string> | null {
     let value = this.get("tokenBalances");
     if (value === null) {
