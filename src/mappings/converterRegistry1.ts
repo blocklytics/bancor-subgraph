@@ -175,7 +175,10 @@ export function handleConverterAddition(event: ConverterAddition): void {
         if (!smartTokenStandardResult.reverted) {
             smartTokenEntity.standard = smartTokenStandardResult.value;
         }
-        smartTokenEntity.transfersEnabled = smartTokenTransfersEnabledResult.value;
+        let smartTokenTransfersEnabledResult = smartTokenContract.try_transfersEnabled();
+        if(!smartTokenTransfersEnabledResult.reverted) {
+            smartTokenEntity.transfersEnabled = smartTokenTransfersEnabledResult.value;
+        }
         smartTokenEntity.smartTokenType = smartTokenType;
         smartTokenEntity.save();
     }
