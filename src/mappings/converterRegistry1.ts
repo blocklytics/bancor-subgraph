@@ -137,8 +137,8 @@ export function handleConverterAddition(event: ConverterAddition): void {
 
     
     let smartTokenContract = SmartTokenContract.bind(smartTokenAddress);
-    let smartTokenTransfersEnabledResult = smartTokenContract.try_transfersEnabled();
-    if (!smartTokenTransfersEnabledResult.reverted) {
+    let smartTokenOwnerResult = smartTokenContract.try_owner();
+    if (!smartTokenOwnerResult.reverted) {
         SmartTokenTemplate.create(smartTokenAddress);
         log.debug("Smart Token template created: {}", [smartTokenAddress.toHex()]);
         let smartTokenEntity = new Token(smartTokenAddress.toHex());
