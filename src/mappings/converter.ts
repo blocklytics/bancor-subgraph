@@ -239,7 +239,7 @@ export function handleVirtualBalancesEnable(event: VirtualBalancesEnable): void 
   let converterConnectorTokens: string[] = [];
   if (!converterConnectorTokenCountResult.reverted) {
     let numConnectorTokens = converterConnectorTokenCountResult.value;
-    log.debug("VirtualBalancesEnable connectorTokens count {} - Converter: {}", [numConnectorTokens, converterAddress.toHex()]);
+    log.debug("VirtualBalancesEnable connectorTokens count {} - Converter: {}", [numConnectorTokens.toString(), converterAddress.toHex()]);
     converterConnectorTokens = [];
     for (let i = 0; i < numConnectorTokens; i++) {
       let connectorTokenResult = converterContract.try_connectorTokens(BigInt.fromI32(i));
