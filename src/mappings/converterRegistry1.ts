@@ -107,7 +107,6 @@ export function handleConverterAddition(event: ConverterAddition): void {
     let converterConnectorTokenCountResult = converterContract.try_connectorTokenCount();
     let converterConnectorTokens = converterEntity.connectorTokens || [];
     if (!converterConnectorTokenCountResult.reverted) {
-        if (converterConnectorTokens.length != converterConnectorTokenCountResult.value) {
             let numConnectorTokens = converterConnectorTokenCountResult.value;
             converterConnectorTokens = [];
             for (let i = 0; i < numConnectorTokens; i++) {
@@ -129,7 +128,6 @@ export function handleConverterAddition(event: ConverterAddition): void {
                     }
                 }
             }
-        }
         if (converterConnectorTokenCountResult.value == 2) {
             smartTokenType = "Relay";
         }

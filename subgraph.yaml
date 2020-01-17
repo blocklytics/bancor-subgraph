@@ -244,6 +244,8 @@ templates:
           handler: handleManagerUpdate
         - event: OwnerUpdate(indexed address,indexed address)
           handler: handleConverterOwnerUpdate
+        - event: VirtualBalancesEnable(bool)
+          handler: handleVirtualBalancesEnable
       callHandlers:
         - function: upgrade()
           handler: handleUpgrade

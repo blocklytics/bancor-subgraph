@@ -72,7 +72,6 @@ export function handleSmartTokenAdded(event: SmartTokenAdded): void {
     let converterConnectorTokenCountResult = converterContract.try_connectorTokenCount();
     let converterConnectorTokens = converterEntity.connectorTokens as Array<string> || [] as Array<string>;
     if (!converterConnectorTokenCountResult.reverted) {
-        if (converterConnectorTokens.length != converterConnectorTokenCountResult.value) {
             let numConnectorTokens = converterConnectorTokenCountResult.value;
             converterConnectorTokens = [];
             for (let i = 0; i < numConnectorTokens; i++) {
@@ -122,7 +121,6 @@ export function handleSmartTokenAdded(event: SmartTokenAdded): void {
                     }
                 }
             }
-        }
         if (converterConnectorTokenCountResult.value == 2) {
             smartTokenEntity.smartTokenType = "Relay";
         } else {

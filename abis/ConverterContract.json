@@ -1028,6 +1028,15 @@
 }, {
     "anonymous": false,
     "inputs": [{
+        "indexed": false,
+        "name": "_enabled",
+        "type": "bool"
+    }],
+    "name": "VirtualBalancesEnable",
+    "type": "event"
+}, {
+    "anonymous": false,
+    "inputs": [{
         "indexed": true,
         "name": "_prevManager",
         "type": "address"
