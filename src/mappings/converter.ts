@@ -257,7 +257,7 @@ export function handleVirtualBalancesEnable(event: VirtualBalancesEnable): void 
           connectorEntity.isSet = converterConnectorsResult.value.value4;
           connectorEntity.converter = converterAddress.toHex();
           connectorEntity.connectorToken = connectorTokenAddress.toHex();
-          log.debug("VirtualBalancesEnable connectorToken address {} - Converter: {}, virtualBalance: {}, isVirtualBalanceEnabled: {}", [connectorTokenAddress.toHex(), converterAddress.toHex(), connectorEntity.virtualBalance.toString(), connectorEntity.isVirtualBalanceEnabled.toString()]);
+          log.debug("VirtualBalancesEnable connectorToken address {} - Converter: {}, virtualBalance: {}", [connectorTokenAddress.toHex(), converterAddress.toHex(), connectorEntity.virtualBalance.toString()]);
           connectorEntity.save();
         }
       }
