@@ -36,13 +36,6 @@ export function handleConverterUpgrade(event: ConverterUpgrade): void {
         let oldConverterTokenBalanceID = oldConverterAddress.toHex() + "-" + converterSmartTokenAddress.toHex();
         let oldConverterTokenBalanceEntity = new ConverterTokenBalance(oldConverterTokenBalanceID);
         oldConverterTokenBalanceEntity.balance = BigInt.fromI32(0);
-        let newConverterTokenBalanceID = newConverterAddress.toHex() + "-" + converterSmartTokenAddress.toHex();
-        let newConverterTokenBalanceEntity = new ConverterTokenBalance(newConverterTokenBalanceID);
-        newConverterTokenBalanceEntity.token = converterSmartTokenAddress.toHex();
-        newConverterTokenBalanceEntity.converter = newConverterAddress.toHex();
-        let tokenContract = SmartContract.bind(converterSmartTokenAddress);
-        newConverterTokenBalanceEntity.balance = tokenContract.balanceOf(newConverterAddress);
-        newConverterTokenBalanceEntity.save();
         oldConverterTokenBalanceEntity.save();
     }
     let connectorCountResult = oldConverterContract.try_connectorTokenCount();
