@@ -1,4 +1,4 @@
-import { BigInt, log } from "@graphprotocol/graph-ts"
+import { BigInt, log, SmartContract } from "@graphprotocol/graph-ts"
 import {
     ConverterUpgrade,
     UpgradeOldCall
@@ -29,6 +29,21 @@ export function handleConverterUpgrade(event: ConverterUpgrade): void {
         newConverterEntity = new Converter(newConverterAddress.toHex());
         newConverterEntity.smartToken = oldConverterEntity.smartToken;
         newConverterEntity.save();
+    }
+    let converterSmartTokenResult = oldConverterContract.try_token();
+    if(!converterSmartTokenResult.reverted) {
+        let converterSmartTokenAddress = converterSmartTokenResult.value;
+        let oldConverterTokenBalanceID = oldConverterAddress.toHex() + "-" + converterSmartTokenAddress.toHex();
+        let oldConverterTokenBalanceEntity = new ConverterTokenBalance(oldConverterTokenBalanceID);
+        oldConverterTokenBalanceEntity.balance = BigInt.fromI32(0);
+        let newConverterTokenBalanceID = newConverterAddress.toHex() + "-" + converterSmartTokenAddress.toHex();
+        let newConverterTokenBalanceEntity = new ConverterTokenBalance(newConverterTokenBalanceID);
+        newConverterTokenBalanceEntity.token = converterSmartTokenAddress.toHex();
+        newConverterTokenBalanceEntity.converter = newConverterAddress.toHex();
+        let tokenContract = SmartContract.bind(converterSmartTokenAddress);
+        newConverterTokenBalanceEntity.balance = tokenContract.balanceOf(newConverterAddress);
+        newConverterTokenBalanceEntity.save();
+        oldConverterTokenBalanceEntity.save();
     }
     let connectorCountResult = oldConverterContract.try_connectorTokenCount();
     if (!connectorCountResult.reverted) {
