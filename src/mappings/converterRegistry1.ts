@@ -134,9 +134,8 @@ export function handleConverterAddition(event: ConverterAddition): void {
     }
 
     
-    let smartTokenContract = SmartTokenContract.bind(smartTokenAddress);
-    let smartTokenOwnerResult = smartTokenContract.try_owner();
-    if (!smartTokenOwnerResult.reverted) {
+    if(converterConnectorTokenCountResult.value > BigInt.fromI32(1)) {
+        let smartTokenContract = SmartTokenContract.bind(smartTokenAddress);
         SmartTokenTemplate.create(smartTokenAddress);
         log.debug("Smart Token template created: {}", [smartTokenAddress.toHex()]);
         let smartTokenEntity = new Token(smartTokenAddress.toHex());
