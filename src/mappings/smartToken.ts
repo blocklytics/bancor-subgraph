@@ -82,7 +82,7 @@ export function handleTransfer(event: Transfer): void {
     }
     toUserSmartTokenBalance.user = toAddress.toHex();
     toUserSmartTokenBalance.smartToken = smartTokenAddress.toHex();
-    let toBalance = smartTokenContract.balanceOf(fromAddress);
+    let toBalance = smartTokenContract.balanceOf(toAddress);
     toUserSmartTokenBalance.balance = toBalance;
     if (toUserSmartTokenBalance.balance < BigInt.fromI32(0)) {
         log.debug("Negative Balance! Transaction: {}, From User: {}, To User: {}, Smart Token: {}", [event.transaction.hash.toHex(), fromAddress.toHex(), toAddress.toHex(), smartTokenAddress.toHex()])
