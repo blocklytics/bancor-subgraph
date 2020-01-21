@@ -134,7 +134,7 @@ export function handleConverterAddition(event: ConverterAddition): void {
     }
 
     
-    if(converterConnectorTokenCountResult.value > BigInt.fromI32(1)) {
+    if(converterConnectorTokenCountResult.value > 1) {
         let smartTokenContract = SmartTokenContract.bind(smartTokenAddress);
         SmartTokenTemplate.create(smartTokenAddress);
         log.debug("Smart Token template created: {}", [smartTokenAddress.toHex()]);
