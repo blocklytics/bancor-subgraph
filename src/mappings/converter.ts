@@ -178,6 +178,10 @@ export function handlePriceDataUpdate(event: PriceDataUpdate): void {
   converterTokenBalance.converter = converterAddress.toHex();
   converterTokenBalance.token = tokenAddress.toHex();
   converterTokenBalance.balance = event.params._connectorBalance;
+  if(converterTokenBalance.balance == BigInt.fromI32(0)) {
+    converterEntity.lastResetBlockNumber = event.block.number;
+    converterEntity.lastResetTimestamp = event.block.timestamp;
+  }
 
   let converterSmartTokenBalanceID = converterAddress.toHex() + "-" + converterToken.toHex();
   let converterSmartTokenBalance = ConverterTokenBalance.load(converterSmartTokenBalanceID);
@@ -223,6 +227,9 @@ export function handleUpgrade(call: UpgradeCall): void {
       converterTokenBalanceEntity = new ConverterTokenBalance(converterTokenBalanceID);
     }
     converterTokenBalanceEntity.balance = BigInt.fromI32(0);
+    converterEntity.lastResetBlockNumber = call.block.number;
+    converterEntity.lastResetTimestamp = call.block.timestamp;
+    converterEntity.save();
     converterTokenBalanceEntity.save();
   }
 }

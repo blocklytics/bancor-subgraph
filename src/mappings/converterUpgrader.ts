@@ -58,6 +58,9 @@ export function handleConverterUpgrade(event: ConverterUpgrade): void {
     } else {
         log.debug("Converter connector count not available for Converter: {} on Converter Upgrade call at transaction {}", [oldConverterAddress.toHex(), newConverterAddress.toHex(), event.transaction.hash.toHex()]);
     }
+    oldConverterEntity.lastResetBlockNumber = event.block.number;
+    oldConverterEntity.lastResetTimestamp = event.block.timestamp;
+    oldConverterEntity.save();
     // let oldConverterTokenBalances = oldConverterEntity.tokenBalances as string[];
     // log.debug("Converter Upgrade fired: {} > {}, Old Converter Balances: {}", [oldConverterAddress.toHex(), newConverterAddress.toHex(), oldConverterTokenBalances.toString()]);
     // for(var i = 0; i < oldConverterTokenBalances.length; i++) {

@@ -493,6 +493,40 @@ export class Converter extends Entity {
     }
   }
 
+  get lastResetBlockNumber(): BigInt | null {
+    let value = this.get("lastResetBlockNumber");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set lastResetBlockNumber(value: BigInt | null) {
+    if (value === null) {
+      this.unset("lastResetBlockNumber");
+    } else {
+      this.set("lastResetBlockNumber", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get lastResetTimestamp(): BigInt | null {
+    let value = this.get("lastResetTimestamp");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set lastResetTimestamp(value: BigInt | null) {
+    if (value === null) {
+      this.unset("lastResetTimestamp");
+    } else {
+      this.set("lastResetTimestamp", Value.fromBigInt(value as BigInt));
+    }
+  }
+
   get currentRegistry(): string | null {
     let value = this.get("currentRegistry");
     if (value === null) {
