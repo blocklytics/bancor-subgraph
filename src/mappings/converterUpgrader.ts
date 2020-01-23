@@ -23,6 +23,9 @@ export function handleConverterUpgrade(event: ConverterUpgrade): void {
 
 
     let oldConverterEntity = Converter.load(oldConverterAddress.toHex());
+    if(oldConverterEntity == null) {
+        oldConverterEntity = new Converter(newConverterAddress.toHex());
+    }
     
     let newConverterEntity = Converter.load(newConverterAddress.toHex());
     if(newConverterEntity == null) {
