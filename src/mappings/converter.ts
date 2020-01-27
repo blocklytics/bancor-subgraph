@@ -268,7 +268,7 @@ export function handleVirtualBalancesEnable(event: VirtualBalancesEnable): void 
           log.debug("VirtualBalancesEnable made it to connector save connectorToken address {} - Converter: {}", [connectorTokenAddress.toHex(), converterAddress.toHex()]);
           log.debug("VirtualBalancesEnable connectorToken address {} - Converter: {}, virtualBalance: {}, weight: {}", [connectorTokenAddress.toHex(), converterAddress.toHex(), connectorEntity.virtualBalance.toString(), connectorEntity.weight.toString()]);
           connectorEntity.save();
-        } catch {
+        } catch(e){
           log.debug("VirtualBalancesEnable connectors call failed - Converter: {}", [converterAddress.toHex()]);
           let converterConnectorsResult = converterContract.try_connectors(connectorTokenAddress);
           if (!converterConnectorsResult.reverted) {
