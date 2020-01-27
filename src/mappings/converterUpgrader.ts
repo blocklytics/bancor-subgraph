@@ -47,13 +47,16 @@ export function handleConverterUpgrade(event: ConverterUpgrade): void {
         for(var i = 0; i < connectorCount; i++) {
             let tokenAddress = oldConverterContract.connectorTokens(BigInt.fromI32(i));
             let oldConverterTokenBalanceID = oldConverterAddress.toHex() + "-" + tokenAddress.toHex();
-            let oldConverterTokenBalanceEntity = new ConverterTokenBalance(oldConverterTokenBalanceID);
-            oldConverterTokenBalanceEntity.balance = BigInt.fromI32(0);
+            let oldConverterTokenBalanceEntity = ConverterTokenBalance.load(oldConverterTokenBalanceID);
+            if(oldConverterTokenBalanceEntity == null) {
+                oldConverterTokenBalanceEntity = new ConverterTokenBalance(oldConverterTokenBalanceID);
+            }
             let newConverterTokenBalanceID = newConverterAddress.toHex() + "-" + tokenAddress.toHex();
             let newConverterTokenBalanceEntity = new ConverterTokenBalance(newConverterTokenBalanceID);
             newConverterTokenBalanceEntity.token = tokenAddress.toHex();
             newConverterTokenBalanceEntity.converter = newConverterAddress.toHex();
             let tokenContract = ERC20Contract.bind(tokenAddress);
+            oldConverterTokenBalanceEntity.balance = tokenContract.balanceOf(oldConverterAddress);
             newConverterTokenBalanceEntity.balance = tokenContract.balanceOf(newConverterAddress);
             newConverterTokenBalanceEntity.save();
             oldConverterTokenBalanceEntity.save();

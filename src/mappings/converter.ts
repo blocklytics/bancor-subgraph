@@ -217,21 +217,21 @@ export function handleConverterOwnerUpdate(event: ConverterOwnerUpdate): void {
 }
 
 export function handleUpgrade(call: UpgradeCall): void {
-  let converterAddress = call.to;
-  let converterEntity = Converter.load(converterAddress.toHex());
-  let converterTokenBalances = converterEntity.tokenBalances as Array < string > ;
-  for (var i = 0; i < converterTokenBalances.length; i++) {
-    let converterTokenBalanceID = converterTokenBalances[i];
-    let converterTokenBalanceEntity = ConverterTokenBalance.load(converterTokenBalanceID);
-    if (converterTokenBalanceEntity == null) {
-      converterTokenBalanceEntity = new ConverterTokenBalance(converterTokenBalanceID);
-    }
-    converterTokenBalanceEntity.balance = BigInt.fromI32(0);
-    converterEntity.lastResetBlockNumber = call.block.number;
-    converterEntity.lastResetTimestamp = call.block.timestamp;
-    converterEntity.save();
-    converterTokenBalanceEntity.save();
-  }
+  // let converterAddress = call.to;
+  // let converterEntity = Converter.load(converterAddress.toHex());
+  // let converterTokenBalances = converterEntity.tokenBalances as Array < string > ;
+  // for (var i = 0; i < converterTokenBalances.length; i++) {
+  //   let converterTokenBalanceID = converterTokenBalances[i];
+  //   let converterTokenBalanceEntity = ConverterTokenBalance.load(converterTokenBalanceID);
+  //   if (converterTokenBalanceEntity == null) {
+  //     converterTokenBalanceEntity = new ConverterTokenBalance(converterTokenBalanceID);
+  //   }
+  //   converterTokenBalanceEntity.balance = BigInt.fromI32(0);
+  //   converterEntity.lastResetBlockNumber = call.block.number;
+  //   converterEntity.lastResetTimestamp = call.block.timestamp;
+  //   converterEntity.save();
+  //   converterTokenBalanceEntity.save();
+  // }
 }
 
 export function handleVirtualBalancesEnable(event: VirtualBalancesEnable): void {
