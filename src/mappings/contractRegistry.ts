@@ -20,6 +20,9 @@ export function handleAddressUpdate(event: AddressUpdate): void {
       let converterRegistryEntity = ConverterRegistry.load(contractAddress)
       if (converterRegistryEntity == null) {
         converterRegistryEntity = new ConverterRegistry(contractAddress);
+        converterRegistryEntity.addedToContractRegistryAtBlockTimestamp = event.block.timestamp;
+        converterRegistryEntity.addedToContractRegistryAtBlockNumber = event.block.number;
+        converterRegistryEntity.addedToContractRegistryAtTransactionHash = event.transaction.hash.toHex();
       }
       converterRegistries.push(event.params._contractAddress.toHex());
       contractRegistryEntity.converterRegistries = converterRegistries;

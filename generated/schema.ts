@@ -262,6 +262,134 @@ export class ConverterRegistry extends Entity {
       this.set("owner", Value.fromString(value as string));
     }
   }
+
+  get addedToContractRegistryAtBlockTimestamp(): BigInt | null {
+    let value = this.get("addedToContractRegistryAtBlockTimestamp");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set addedToContractRegistryAtBlockTimestamp(value: BigInt | null) {
+    if (value === null) {
+      this.unset("addedToContractRegistryAtBlockTimestamp");
+    } else {
+      this.set(
+        "addedToContractRegistryAtBlockTimestamp",
+        Value.fromBigInt(value as BigInt)
+      );
+    }
+  }
+
+  get addedToContractRegistryAtTransactionHash(): string | null {
+    let value = this.get("addedToContractRegistryAtTransactionHash");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set addedToContractRegistryAtTransactionHash(value: string | null) {
+    if (value === null) {
+      this.unset("addedToContractRegistryAtTransactionHash");
+    } else {
+      this.set(
+        "addedToContractRegistryAtTransactionHash",
+        Value.fromString(value as string)
+      );
+    }
+  }
+
+  get addedToContractRegistryAtBlockNumber(): BigInt | null {
+    let value = this.get("addedToContractRegistryAtBlockNumber");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set addedToContractRegistryAtBlockNumber(value: BigInt | null) {
+    if (value === null) {
+      this.unset("addedToContractRegistryAtBlockNumber");
+    } else {
+      this.set(
+        "addedToContractRegistryAtBlockNumber",
+        Value.fromBigInt(value as BigInt)
+      );
+    }
+  }
+
+  get lastUsedAtBlockTimestamp(): BigInt | null {
+    let value = this.get("lastUsedAtBlockTimestamp");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set lastUsedAtBlockTimestamp(value: BigInt | null) {
+    if (value === null) {
+      this.unset("lastUsedAtBlockTimestamp");
+    } else {
+      this.set("lastUsedAtBlockTimestamp", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get lastUsedAtTransactionHash(): string | null {
+    let value = this.get("lastUsedAtTransactionHash");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set lastUsedAtTransactionHash(value: string | null) {
+    if (value === null) {
+      this.unset("lastUsedAtTransactionHash");
+    } else {
+      this.set("lastUsedAtTransactionHash", Value.fromString(value as string));
+    }
+  }
+
+  get lastUsedAtBlockNumber(): BigInt | null {
+    let value = this.get("lastUsedAtBlockNumber");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set lastUsedAtBlockNumber(value: BigInt | null) {
+    if (value === null) {
+      this.unset("lastUsedAtBlockNumber");
+    } else {
+      this.set("lastUsedAtBlockNumber", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get numConverters(): BigInt | null {
+    let value = this.get("numConverters");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set numConverters(value: BigInt | null) {
+    if (value === null) {
+      this.unset("numConverters");
+    } else {
+      this.set("numConverters", Value.fromBigInt(value as BigInt));
+    }
+  }
 }
 
 export class Converter extends Entity {
@@ -527,8 +655,48 @@ export class Converter extends Entity {
     }
   }
 
-  get currentRegistry(): string | null {
-    let value = this.get("currentRegistry");
+  get firstAddedToRegistryBlockNumber(): BigInt | null {
+    let value = this.get("firstAddedToRegistryBlockNumber");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set firstAddedToRegistryBlockNumber(value: BigInt | null) {
+    if (value === null) {
+      this.unset("firstAddedToRegistryBlockNumber");
+    } else {
+      this.set(
+        "firstAddedToRegistryBlockNumber",
+        Value.fromBigInt(value as BigInt)
+      );
+    }
+  }
+
+  get firstAddedToRegistryBlockTimestamp(): BigInt | null {
+    let value = this.get("firstAddedToRegistryBlockTimestamp");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set firstAddedToRegistryBlockTimestamp(value: BigInt | null) {
+    if (value === null) {
+      this.unset("firstAddedToRegistryBlockTimestamp");
+    } else {
+      this.set(
+        "firstAddedToRegistryBlockTimestamp",
+        Value.fromBigInt(value as BigInt)
+      );
+    }
+  }
+
+  get currentConverterRegistry(): string | null {
+    let value = this.get("currentConverterRegistry");
     if (value === null) {
       return null;
     } else {
@@ -536,11 +704,28 @@ export class Converter extends Entity {
     }
   }
 
-  set currentRegistry(value: string | null) {
+  set currentConverterRegistry(value: string | null) {
     if (value === null) {
-      this.unset("currentRegistry");
+      this.unset("currentConverterRegistry");
     } else {
-      this.set("currentRegistry", Value.fromString(value as string));
+      this.set("currentConverterRegistry", Value.fromString(value as string));
+    }
+  }
+
+  get currentContractRegistry(): string | null {
+    let value = this.get("currentContractRegistry");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set currentContractRegistry(value: string | null) {
+    if (value === null) {
+      this.unset("currentContractRegistry");
+    } else {
+      this.set("currentContractRegistry", Value.fromString(value as string));
     }
   }
 
@@ -887,8 +1072,8 @@ export class Token extends Entity {
     }
   }
 
-  get currentRegistry(): string | null {
-    let value = this.get("currentRegistry");
+  get currentConverterRegistry(): string | null {
+    let value = this.get("currentConverterRegistry");
     if (value === null) {
       return null;
     } else {
@@ -896,11 +1081,11 @@ export class Token extends Entity {
     }
   }
 
-  set currentRegistry(value: string | null) {
+  set currentConverterRegistry(value: string | null) {
     if (value === null) {
-      this.unset("currentRegistry");
+      this.unset("currentConverterRegistry");
     } else {
-      this.set("currentRegistry", Value.fromString(value as string));
+      this.set("currentConverterRegistry", Value.fromString(value as string));
     }
   }
 

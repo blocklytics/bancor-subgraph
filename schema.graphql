@@ -17,6 +17,13 @@ type ConverterRegistry @entity {
   smartTokens: [Token!]
   connectorTokens: [Token!]
   owner: String
+  addedToContractRegistryAtBlockTimestamp: BigInt
+  addedToContractRegistryAtTransactionHash: String
+  addedToContractRegistryAtBlockNumber: BigInt
+  lastUsedAtBlockTimestamp: BigInt
+  lastUsedAtTransactionHash: String
+  lastUsedAtBlockNumber: BigInt
+  numConverters: BigInt
 }
 
 type Converter @entity {
@@ -36,7 +43,10 @@ type Converter @entity {
   maxConversionFee: BigInt
   lastResetBlockNumber: BigInt
   lastResetTimestamp: BigInt
-  currentRegistry: ConverterRegistry
+  firstAddedToRegistryBlockNumber: BigInt
+  firstAddedToRegistryBlockTimestamp: BigInt
+  currentConverterRegistry: ConverterRegistry
+  currentContractRegistry: ContractRegistry
   tokenBalances: [ConverterTokenBalance!] @derivedFrom(field: "converter")
   tokenSwapTotals: [ConverterTokenSwapTotal!] @derivedFrom(field: "converter")
 }
@@ -63,7 +73,7 @@ type Token @entity {
   converterWithShortestQuickBuyPath: Converter
   owner: String
   tokenSwapTotals: [TokenSwapTotal!] @derivedFrom(field: "toToken")
-  currentRegistry: ConverterRegistry
+  currentConverterRegistry: ConverterRegistry
   addedToRegistryBlockNumber: BigInt
   addedToRegistryTransactionHash: String
 }

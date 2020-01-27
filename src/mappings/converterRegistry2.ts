@@ -43,6 +43,8 @@ export function handleConverterAddition(event: ConverterAddition): void {
     if (converterEntity == null) {
         ConverterTemplate.create(event.params._address);
         converterEntity = new Converter(converterAddress.toHex());
+        converterEntity.firstAddedToRegistryBlockNumber = event.block.number;
+        converterEntity.firstAddedToRegistryBlockTimestamp = event.block.timestamp;
     }
     let converterContract = ConverterContract.bind(converterAddress);
     let converterQBPLength = 0;
@@ -99,7 +101,11 @@ export function handleConverterAddition(event: ConverterAddition): void {
     connectorTokenEntity.save();
 
     converterEntity.smartToken = smartTokenAddress.toHex();
-    converterEntity.currentRegistry = event.address.toHex();
+    converterEntity.currentConverterRegistry = event.address.toHex();
+    let converterContractRegistryResult = converterContract.try_registry();
+    if(!converterContractRegistryResult.reverted) {
+        converterEntity.currentContractRegistry = converterContractRegistryResult.value.toHex();
+    }
     let converterVersionResult = converterContract.try_version();
     if (!converterVersionResult.reverted) {
         converterEntity.version = converterVersionResult.value;
@@ -161,7 +167,7 @@ export function handleConverterAddition(event: ConverterAddition): void {
             smartTokenConverters.push(converterAddress.toHex());
             log.debug("Smart Token Converters: {}", [smartTokenConverters.toString()])
             smartTokenEntity.converters = smartTokenConverters;
-            smartTokenEntity.currentRegistry = event.address.toHex();
+            smartTokenEntity.currentConverterRegistry = event.address.toHex();
             let smartTokenVersionResult = smartTokenContract.try_version();
             if (!smartTokenVersionResult.reverted) {
                 smartTokenEntity.version = smartTokenVersionResult.value;
@@ -210,6 +216,11 @@ export function handleConverterAddition(event: ConverterAddition): void {
     if (converterRegistryEntity == null) {
         converterRegistryEntity = new ConverterRegistry(event.address.toHex());
     }
+    let numConvertersInRegistry = converterRegistryEntity.numConverters || BigInt.fromI32(0);
+    converterRegistryEntity.lastUsedAtBlockTimestamp = event.block.timestamp;
+    converterRegistryEntity.lastUsedAtTransactionHash = event.transaction.hash.toHex();
+    converterRegistryEntity.lastUsedAtBlockNumber = event.block.number;
+    converterRegistryEntity.numConverters = numConvertersInRegistry.plus(BigInt.fromI32(1));
     let converterRegistryConverters = converterRegistryEntity.converters || [];
     converterRegistryConverters.push(converterAddress.toHex())
     log.debug("Converter Registry Converters: {}", [converterRegistryConverters.toString()]);

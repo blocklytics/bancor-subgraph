@@ -219,7 +219,7 @@ export function handleSmartTokenOwnerUpdate(event: SmartTokenOwnerUpdate): void 
         converterEntity.quickBuyPathLength = converterQBPLength;
         converterEntity.quickBuyPath = converterQuickBuyPath;
     }
-    let converterRegistryAddress = smartTokenEntity.currentRegistry;
+    let converterRegistryAddress = smartTokenEntity.currentConverterRegistry;
     let converterRegistryEntity = ConverterRegistry.load(converterRegistryAddress);
     if (converterRegistryEntity == null) {
         converterRegistryEntity = new ConverterRegistry(converterRegistryAddress);
