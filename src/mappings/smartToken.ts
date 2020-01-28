@@ -26,20 +26,6 @@ import {
     Connector
 } from "../../generated/schema"
 
-// Smart Token events
-// export function handleNewSmartToken(event: NewSmartToken): void {
-//     // let smartToken = new SmartToken(event.address.toHex());
-//     // let contract = SmartTokenContract.bind(event.address);
-//     // smartToken.targetTokenName = contract.name();
-//     // smartToken.targetTokenSymbol = contract.symbol();
-//     // smartToken.targetTokenDecimals = contract.decimals();
-//     // smartToken.save()
-// }
-
-// export function handleIssuance(event: Issuance): void {}
-
-// export function handleDestruction(event: Destruction): void {}
-
 export function handleTransfer(event: Transfer): void {
     log.debug("Smart Token Transfer event fired - {}: {} > {}", [event.address.toHex(), event.params._from.toHex(), event.params._to.toHex()])
     let smartTokenAddress = event.address;
@@ -145,14 +131,33 @@ export function handleSmartTokenOwnerUpdate(event: SmartTokenOwnerUpdate): void 
                     }
                     connectorTokenEntity.isSmartToken = false;
 
-                    let connectorTokenNameResult = connectorTokenContract.try_name();
-                    if (!connectorTokenNameResult.reverted) {
-                        connectorTokenEntity.name = connectorTokenNameResult.value;
+                    if (connectorTokenAddress.toHex() == "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2") {
+                        connectorTokenEntity.name = "Maker";
+                        connectorTokenEntity.symbol = "MKR";
                     }
-                    let connectorTokenSymbolResult = connectorTokenContract.try_symbol();
-                    if (!connectorTokenSymbolResult.reverted) {
-                        connectorTokenEntity.symbol = connectorTokenSymbolResult.value;
+                    else if (connectorTokenAddress.toHex() == "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359") {
+                        connectorTokenEntity.name = "Sai Stablecoin";
+                        connectorTokenEntity.symbol = "SAI";
                     }
+                    else if (connectorTokenAddress.toHex() == "0xe0b7927c4af23765cb51314a0e0521a9645f0e2a") {
+                        connectorTokenEntity.name = "DigixDAO";
+                        connectorTokenEntity.symbol = "DGD";
+                    }
+                    else if (connectorTokenAddress.toHex() == "0xf1290473e210b2108a85237fbcd7b6eb42cc654f") {
+                        connectorTokenEntity.name = "HedgeTrade";
+                        connectorTokenEntity.symbol = "HEDG";
+                    }
+                    else {
+                        let connectorTokenNameResult = connectorTokenContract.try_name();
+                        if (!connectorTokenNameResult.reverted) {
+                            connectorTokenEntity.name = connectorTokenNameResult.value;
+                        }
+                        let connectorTokenSymbolResult = connectorTokenContract.try_symbol();
+                        if (!connectorTokenSymbolResult.reverted) {
+                            connectorTokenEntity.symbol = connectorTokenSymbolResult.value;
+                        }
+                    }
+
                     let connectorTokenDecimalsResult = connectorTokenContract.try_decimals();
                     if (!connectorTokenDecimalsResult.reverted) {
                         connectorTokenEntity.decimals = connectorTokenDecimalsResult.value;

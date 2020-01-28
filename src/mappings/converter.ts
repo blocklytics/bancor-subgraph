@@ -40,67 +40,62 @@ export function handleConversion(event: Conversion): void {
     trader = new User(event.transaction.from.toHex());
   }
   let fromTokenContract = ERC20Contract.bind(event.params._fromToken);
-  let toTokenContract = ERC20Contract.bind(event.params._toToken);
-  let fromTokenNameResult = fromTokenContract.try_name();
-  if (!fromTokenNameResult.reverted) {
-    fromToken.name = fromTokenNameResult.value;
+  if (event.params._fromToken.toHex() == "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2") {
+    fromToken.name = "Maker";
+    fromToken.symbol = "MKR";
+  } else if (event.params._fromToken.toHex() == "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359") {
+    fromToken.name = "Sai Stablecoin";
+    fromToken.symbol = "SAI";
+  } else if (event.params._fromToken.toHex() == "0xe0b7927c4af23765cb51314a0e0521a9645f0e2a") {
+    fromToken.name = "DigixDAO";
+    fromToken.symbol = "DGD";
+  } else if (event.params._fromToken.toHex() == "0xf1290473e210b2108a85237fbcd7b6eb42cc654f") {
+    fromToken.name = "HedgeTrade";
+    fromToken.symbol = "HEDG";
+  } 
+  else {
+    let fromTokenNameResult = fromTokenContract.try_name();
+    if (!fromTokenNameResult.reverted) {
+      fromToken.name = fromTokenNameResult.value;
+    }
+    let fromTokenSymbolResult = fromTokenContract.try_symbol();
+    if (!fromTokenSymbolResult.reverted) {
+      fromToken.symbol = fromTokenSymbolResult.value;
+    }
   }
-  // else {
-  //   let fromTokenNameResultBytes = fromTokenContract.try_name1();
-  //   if(!fromTokenNameResultBytes.reverted) {
-  //     fromToken.name = fromTokenNameResultBytes.value.toHex();
-  //   }
-  // }
-  let fromTokenSymbolResult = fromTokenContract.try_symbol();
-  if (!fromTokenSymbolResult.reverted) {
-    fromToken.symbol = fromTokenSymbolResult.value;
-  }
-  // else {
-  //   let fromTokenSymbolResultBytes = fromTokenContract.try_symbol1();
-  //   if(!fromTokenSymbolResultBytes.reverted) {
-  //     fromToken.symbol = fromTokenSymbolResultBytes.value.toHex();
-  //   }
-  // }
   let fromTokenDecimalsResult = fromTokenContract.try_decimals();
   if (!fromTokenDecimalsResult.reverted) {
     fromToken.decimals = fromTokenDecimalsResult.value;
   }
-  // else {
-  //   fromTokenDecimalsResult = fromTokenContract.try_DECIMALS();
-  //   if(!fromTokenDecimalsResult.reverted) {
-  //     fromToken.decimals = fromTokenDecimalsResult.value;
-  //   }
-  // }
-  let toTokenNameResult = toTokenContract.try_name();
-  if (!toTokenNameResult.reverted) {
-    toToken.name = toTokenNameResult.value;
+
+  let toTokenContract = ERC20Contract.bind(event.params._toToken);
+  if (event.params._toToken.toHex() == "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2") {
+    toToken.name = "Maker";
+    toToken.symbol = "MKR";
+  } else if (event.params._toToken.toHex() == "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359") {
+    toToken.name = "Sai Stablecoin";
+    toToken.symbol = "SAI";
+  } else if (event.params._toToken.toHex() == "0xe0b7927c4af23765cb51314a0e0521a9645f0e2a") {
+    toToken.name = "DigixDAO";
+    toToken.symbol = "DGD";
+  } else if (event.params._toToken.toHex() == "0xf1290473e210b2108a85237fbcd7b6eb42cc654f") {
+    toToken.name = "HedgeTrade";
+    toToken.symbol = "HEDG";
+  } 
+  else {
+    let toTokenNameResult = toTokenContract.try_name();
+    if (!toTokenNameResult.reverted) {
+      toToken.name = toTokenNameResult.value;
+    }
+    let toTokenSymbolResult = toTokenContract.try_symbol();
+    if (!toTokenSymbolResult.reverted) {
+      toToken.symbol = toTokenSymbolResult.value;
+    }
   }
-  // else {
-  //   let toTokenNameResultBytes = toTokenContract.try_name1();
-  //   if(!toTokenNameResultBytes.reverted) {
-  //     toToken.name = toTokenNameResultBytes.value.toHex();
-  //   }
-  // }
-  let toTokenSymbolResult = toTokenContract.try_symbol();
-  if (!toTokenSymbolResult.reverted) {
-    toToken.symbol = toTokenSymbolResult.value;
-  }
-  // else {
-  //   let toTokenSymbolResultBytes = toTokenContract.try_symbol1();
-  //   if(!toTokenSymbolResultBytes.reverted) {
-  //     toToken.symbol = toTokenSymbolResultBytes.value.toHex();
-  //   }
-  // }
   let toTokenDecimalsResult = toTokenContract.try_decimals();
   if (!toTokenDecimalsResult.reverted) {
     toToken.decimals = toTokenDecimalsResult.value;
   }
-  // else {
-  //   toTokenDecimalsResult = toTokenContract.try_DECIMALS();
-  //   if(!toTokenDecimalsResult.reverted) {
-  //     toToken.decimals = toTokenDecimalsResult.value;
-  //   }
-  // }
   swap.fromToken = event.params._fromToken.toHex();
   swap.toToken = event.params._toToken.toHex();
   swap.converterUsed = event.address.toHex();
