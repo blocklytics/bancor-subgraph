@@ -1335,6 +1335,154 @@ export class Swap extends Entity {
     }
   }
 
+  get price(): BigDecimal | null {
+    let value = this.get("price");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigDecimal();
+    }
+  }
+
+  set price(value: BigDecimal | null) {
+    if (value === null) {
+      this.unset("price");
+    } else {
+      this.set("price", Value.fromBigDecimal(value as BigDecimal));
+    }
+  }
+
+  get inversePrice(): BigDecimal | null {
+    let value = this.get("inversePrice");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigDecimal();
+    }
+  }
+
+  set inversePrice(value: BigDecimal | null) {
+    if (value === null) {
+      this.unset("inversePrice");
+    } else {
+      this.set("inversePrice", Value.fromBigDecimal(value as BigDecimal));
+    }
+  }
+
+  get converterWeight(): BigInt | null {
+    let value = this.get("converterWeight");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set converterWeight(value: BigInt | null) {
+    if (value === null) {
+      this.unset("converterWeight");
+    } else {
+      this.set("converterWeight", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get converterFromTokenBalanceBeforeSwap(): BigInt | null {
+    let value = this.get("converterFromTokenBalanceBeforeSwap");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set converterFromTokenBalanceBeforeSwap(value: BigInt | null) {
+    if (value === null) {
+      this.unset("converterFromTokenBalanceBeforeSwap");
+    } else {
+      this.set(
+        "converterFromTokenBalanceBeforeSwap",
+        Value.fromBigInt(value as BigInt)
+      );
+    }
+  }
+
+  get converterFromTokenBlanceAfterSwap(): BigInt | null {
+    let value = this.get("converterFromTokenBlanceAfterSwap");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set converterFromTokenBlanceAfterSwap(value: BigInt | null) {
+    if (value === null) {
+      this.unset("converterFromTokenBlanceAfterSwap");
+    } else {
+      this.set(
+        "converterFromTokenBlanceAfterSwap",
+        Value.fromBigInt(value as BigInt)
+      );
+    }
+  }
+
+  get converterToTokenBalanceBeforeSwap(): BigInt | null {
+    let value = this.get("converterToTokenBalanceBeforeSwap");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set converterToTokenBalanceBeforeSwap(value: BigInt | null) {
+    if (value === null) {
+      this.unset("converterToTokenBalanceBeforeSwap");
+    } else {
+      this.set(
+        "converterToTokenBalanceBeforeSwap",
+        Value.fromBigInt(value as BigInt)
+      );
+    }
+  }
+
+  get converterToTokenBalanceAfterSwap(): BigInt | null {
+    let value = this.get("converterToTokenBalanceAfterSwap");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set converterToTokenBalanceAfterSwap(value: BigInt | null) {
+    if (value === null) {
+      this.unset("converterToTokenBalanceAfterSwap");
+    } else {
+      this.set(
+        "converterToTokenBalanceAfterSwap",
+        Value.fromBigInt(value as BigInt)
+      );
+    }
+  }
+
+  get slippage(): BigDecimal | null {
+    let value = this.get("slippage");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigDecimal();
+    }
+  }
+
+  set slippage(value: BigDecimal | null) {
+    if (value === null) {
+      this.unset("slippage");
+    } else {
+      this.set("slippage", Value.fromBigDecimal(value as BigDecimal));
+    }
+  }
+
   get conversionFee(): BigInt | null {
     let value = this.get("conversionFee");
     if (value === null) {

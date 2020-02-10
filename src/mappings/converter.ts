@@ -96,16 +96,32 @@ export function handleConversion(event: Conversion): void {
   if (!toTokenDecimalsResult.reverted) {
     toToken.decimals = toTokenDecimalsResult.value;
   }
+  let amountPurchased = event.params._amount;
+  let amountReturned = event.params._return;
+  let fromTokenBalanceAfterSwap = fromTokenContract.balanceOf(event.address);
+  let toTokenBalanceAfterSwap = toTokenContract.balanceOf(event.address);
+  let fromTokenBalanceBeforeSwap = fromTokenBalanceAfterSwap.plus(amountPurchased);
+  let toTokenBalanceBeforeSwap = toTokenBalanceAfterSwap.minus(amountReturned);
+  let originalPrice = fromTokenBalanceBeforeSwap.toBigDecimal().div(toTokenBalanceBeforeSwap.toBigDecimal());
+  let actualPrice = amountPurchased.toBigDecimal().div(amountReturned.toBigDecimal());
+  let slippage = (originalPrice.minus(actualPrice)).div(originalPrice);
   swap.fromToken = event.params._fromToken.toHex();
   swap.toToken = event.params._toToken.toHex();
   swap.converterUsed = event.address.toHex();
-  swap.amountPurchased = event.params._amount;
-  swap.amountReturned = event.params._return;
+  swap.amountPurchased = amountPurchased;
+  swap.amountReturned = amountReturned
   swap.conversionFee = event.params._conversionFee;
   swap.trader = event.transaction.from.toHex();
   swap.transaction = event.transaction.hash.toHex();
   swap.logIndex = event.logIndex.toI32();
   swap.timestamp = event.block.timestamp;
+  swap.price = actualPrice;
+  swap.inversePrice = amountReturned.toBigDecimal().div(amountPurchased.toBigDecimal());
+  swap.converterFromTokenBalanceBeforeSwap = fromTokenBalanceBeforeSwap;
+  swap.converterFromTokenBlanceAfterSwap = fromTokenBalanceAfterSwap;
+  swap.converterToTokenBalanceBeforeSwap = toTokenBalanceBeforeSwap;
+  swap.converterToTokenBalanceAfterSwap = toTokenBalanceAfterSwap;
+  swap.slippage = slippage;
   transaction.blockNumber = event.block.number;
   transaction.blockTimestamp = event.block.timestamp;
   transaction.gasUsed = event.transaction.gasUsed;
@@ -249,12 +265,12 @@ export function handleVirtualBalancesEnable(event: VirtualBalancesEnable): void 
         let connectorTokenAddress = connectorTokenResult.value;
         log.debug("VirtualBalancesEnable connectorToken address {} - Converter: {}", [connectorTokenAddress.toHex(), converterAddress.toHex()]);
         // converterConnectorTokens.push(connectorTokenAddress.toHex());
-        let converterConnectorsResult = converterContract.try_connectors(connectorTokenAddress);
-        if (!converterConnectorsResult.reverted) {
+        let converterConnectorsResult = converterContract.connectors(connectorTokenAddress);
+        // if (!converterConnectorsResult.reverted) {
           log.debug("VirtualBalancesEnable connectors not reverted - Converter: {}", [converterAddress.toHex()]);
           let connectorEntity = new Connector(converterAddress.toHex() + "-" + connectorTokenAddress.toHex());
-          connectorEntity.virtualBalance = converterConnectorsResult.value.value0;
-          connectorEntity.weight = converterConnectorsResult.value.value1;
+          connectorEntity.virtualBalance = converterConnectorsResult.value0;
+          connectorEntity.weight = converterConnectorsResult.value1;
           // connectorEntity.isVirtualBalanceEnabled = converterConnectorsResult.value.value2;
           // connectorEntity.isPurchaseEnabled = converterConnectorsResult.value.value3;
           // connectorEntity.isSet = converterConnectorsResult.value.value4;
@@ -263,7 +279,7 @@ export function handleVirtualBalancesEnable(event: VirtualBalancesEnable): void 
           log.debug("VirtualBalancesEnable made it to connector save connectorToken address {} - Converter: {}", [connectorTokenAddress.toHex(), converterAddress.toHex()]);
           log.debug("VirtualBalancesEnable connectorToken address {} - Converter: {}, virtualBalance: {}, weight: {}", [connectorTokenAddress.toHex(), converterAddress.toHex(), connectorEntity.virtualBalance.toString(), connectorEntity.weight.toString()]);
           connectorEntity.save();
-        }
+        // }
       }
     }
     // converterEntity.connectorTokens = converterConnectorTokens;
