@@ -231,6 +231,8 @@ templates:
       abis:
         - name: ConverterContract
           file: ./abis/ConverterContract.json
+        - name: ConverterContractOld
+          file: ./abis/ConverterContractOld.json
         - name: ERC20Contract
           file: ./abis/ERC20Contract.json
       eventHandlers:
