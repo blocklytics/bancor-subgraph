@@ -268,11 +268,19 @@ export function handleVirtualBalancesEnable(event: VirtualBalancesEnable): void 
         let connectorTokenAddress = connectorTokenResult.value;
         log.debug("VirtualBalancesEnable connectorToken address {} - Converter: {}", [connectorTokenAddress.toHex(), converterAddress.toHex()]);
         converterConnectorTokens.push(connectorTokenAddress.toHex());
-        let converterConnectorsResult = converterContract.try_connectors(connectorTokenAddress);
         let connectorEntity = new Connector(converterAddress.toHex() + "-" + connectorTokenAddress.toHex());
         connectorEntity.converter = converterAddress.toHex();
         connectorEntity.connectorToken = connectorTokenAddress.toHex();
-        if (converterConnectorsResult.reverted) {
+        let converterConnectorsResult = converterContract.try_connectors(connectorTokenAddress);
+        if (!converterConnectorsResult.reverted) {
+          log.debug("VirtualBalancesEnable connectors not reverted - Converter: {}", [converterAddress.toHex()]);
+          connectorEntity.virtualBalance = converterConnectorsResult.value.value0;
+          connectorEntity.weight = converterConnectorsResult.value.value1;
+          connectorEntity.isVirtualBalanceEnabled = converterConnectorsResult.value.value2;
+          connectorEntity.isPurchaseEnabled = converterConnectorsResult.value.value3;
+          connectorEntity.isSet = converterConnectorsResult.value.value4;
+        }
+        else {
           let converterContractOld = ConverterContractOld.bind(converterAddress);
           let converterConnectorsOldResult = converterContractOld.try_connectors(connectorTokenAddress);
           if(!converterConnectorsOldResult.reverted) {
@@ -283,14 +291,6 @@ export function handleVirtualBalancesEnable(event: VirtualBalancesEnable): void 
             connectorEntity.isPurchaseEnabled = converterConnectorsResult.value.value3;
             connectorEntity.isSet = converterConnectorsResult.value.value4;
           }
-        }
-        else {
-          log.debug("VirtualBalancesEnable connectors not reverted - Converter: {}", [converterAddress.toHex()]);
-          connectorEntity.virtualBalance = converterConnectorsResult.value.value0;
-          connectorEntity.weight = converterConnectorsResult.value.value1;
-          connectorEntity.isVirtualBalanceEnabled = converterConnectorsResult.value.value2;
-          connectorEntity.isPurchaseEnabled = converterConnectorsResult.value.value3;
-          connectorEntity.isSet = converterConnectorsResult.value.value4;
         }
         connectorEntity.save();
       }
