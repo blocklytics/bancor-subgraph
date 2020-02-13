@@ -285,11 +285,11 @@ export function handleVirtualBalancesEnable(event: VirtualBalancesEnable): void 
           let converterConnectorsOldResult = converterContractOld.try_connectors(connectorTokenAddress);
           if(!converterConnectorsOldResult.reverted) {
             log.debug("VirtualBalancesEnable Old connectors not reverted - Converter: {}", [converterAddress.toHex()]);
-            connectorEntity.virtualBalance = converterConnectorsResult.value.value0;
-            connectorEntity.weight = converterConnectorsResult.value.value1;
-            connectorEntity.isVirtualBalanceEnabled = converterConnectorsResult.value.value2;
-            connectorEntity.isPurchaseEnabled = converterConnectorsResult.value.value3;
-            connectorEntity.isSet = converterConnectorsResult.value.value4;
+            connectorEntity.virtualBalance = converterConnectorsOldResult.value.value0;
+            connectorEntity.weight = converterConnectorsOldResult.value.value1;
+            connectorEntity.isVirtualBalanceEnabled = converterConnectorsOldResult.value.value2;
+            connectorEntity.isPurchaseEnabled = converterConnectorsOldResult.value.value3;
+            connectorEntity.isSet = converterConnectorsOldResult.value.value4;
           }
         }
         connectorEntity.save();
