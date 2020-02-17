@@ -1406,8 +1406,8 @@ export class Swap extends Entity {
     }
   }
 
-  get converterFromTokenBlanceAfterSwap(): BigInt | null {
-    let value = this.get("converterFromTokenBlanceAfterSwap");
+  get converterFromTokenBalanceAfterSwap(): BigInt | null {
+    let value = this.get("converterFromTokenBalanceAfterSwap");
     if (value === null) {
       return null;
     } else {
@@ -1415,12 +1415,12 @@ export class Swap extends Entity {
     }
   }
 
-  set converterFromTokenBlanceAfterSwap(value: BigInt | null) {
+  set converterFromTokenBalanceAfterSwap(value: BigInt | null) {
     if (value === null) {
-      this.unset("converterFromTokenBlanceAfterSwap");
+      this.unset("converterFromTokenBalanceAfterSwap");
     } else {
       this.set(
-        "converterFromTokenBlanceAfterSwap",
+        "converterFromTokenBalanceAfterSwap",
         Value.fromBigInt(value as BigInt)
       );
     }

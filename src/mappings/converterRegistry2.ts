@@ -43,6 +43,9 @@ export function handleConverterAddition(event: ConverterAddition): void {
     if (converterEntity == null) {
         ConverterTemplate.create(event.params._address);
         converterEntity = new Converter(converterAddress.toHex());
+    }
+
+    if(converterEntity.firstAddedToRegistryBlockNumber == null) {
         converterEntity.firstAddedToRegistryBlockNumber = event.block.number;
         converterEntity.firstAddedToRegistryBlockTimestamp = event.block.timestamp;
     }
@@ -158,12 +161,17 @@ export function handleConverterAddition(event: ConverterAddition): void {
             smartTokenType = "Relay";
         }
         if(converterConnectorTokenCountResult.value > 1) {
+            let smartTokenEntity = Token.load(smartTokenAddress.toHex());
+            if( smartTokenEntity == null) {
+                smartTokenEntity = new Token(smartTokenAddress.toHex());
+                SmartTokenTemplate.create(smartTokenAddress);
+                log.debug("Smart Token template created: {}", [smartTokenAddress.toHex()]);
+            }
             let smartTokenContract = SmartTokenContract.bind(smartTokenAddress);
-            SmartTokenTemplate.create(smartTokenAddress);
-            log.debug("Smart Token template created: {}", [smartTokenAddress.toHex()]);
-            let smartTokenEntity = new Token(smartTokenAddress.toHex());
-            smartTokenEntity.addedToRegistryBlockNumber = event.block.number;
-            smartTokenEntity.addedToRegistryTransactionHash = event.transaction.hash.toHex();
+            if(smartTokenEntity.addedToRegistryBlockNumber == null) {
+                smartTokenEntity.addedToRegistryBlockNumber = event.block.number;
+                smartTokenEntity.addedToRegistryTransactionHash = event.transaction.hash.toHex();
+            }
             smartTokenEntity.isSmartToken = true;
             let smartTokenConnectorTokens = smartTokenEntity.connectorTokens || [];
             smartTokenConnectorTokens.push(connectorTokenAddress.toHex());

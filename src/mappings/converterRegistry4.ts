@@ -35,9 +35,20 @@ import {
 // Converter Registry events
 export function handleSmartTokenAdded(event: SmartTokenAdded): void {
     let smartTokenAddress = event.params._smartToken;
-    log.debug("Smart Token added to registry: {}", [smartTokenAddress.toHex()])
-    SmartTokenTemplate.create(smartTokenAddress);
+    let smartTokenEntity = Token.load(smartTokenAddress.toHex());
+    if( smartTokenEntity == null) {
+        smartTokenEntity = new Token(smartTokenAddress.toHex());
+        SmartTokenTemplate.create(smartTokenAddress);
+        log.debug("Smart Token template created: {}", [smartTokenAddress.toHex()]);
+    }
     let smartTokenContract = SmartTokenContract.bind(smartTokenAddress);
+    if(smartTokenEntity.addedToRegistryBlockNumber == null) {
+        smartTokenEntity.addedToRegistryBlockNumber = event.block.number;
+        smartTokenEntity.addedToRegistryTransactionHash = event.transaction.hash.toHex();
+    }
+    smartTokenEntity.isSmartToken = true;
+    log.debug("Smart Token added to registry: {}", [smartTokenAddress.toHex()])
+    
     let converterAddress = smartTokenContract.owner();
     let converterEntity = Converter.load(converterAddress.toHex());
 
@@ -66,10 +77,6 @@ export function handleSmartTokenAdded(event: SmartTokenAdded): void {
         }
         log.debug("Converter {}, QBP Length: {}, QBP: {}", [converterAddress.toHex(), converterQBPLength.toString(), converterQuickBuyPath.toString()])
     }
-    let smartTokenEntity = new Token(smartTokenAddress.toHex());
-    smartTokenEntity.addedToRegistryBlockNumber = event.block.number;
-    smartTokenEntity.addedToRegistryTransactionHash = event.transaction.hash.toHex();
-    smartTokenEntity.isSmartToken = true;
 
     let converterConnectorTokenCountResult = converterContract.try_connectorTokenCount();
     let converterConnectorTokens = converterEntity.connectorTokens as Array<string> || [] as Array<string>;

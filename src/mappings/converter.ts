@@ -121,7 +121,7 @@ export function handleConversion(event: Conversion): void {
   swap.price = actualPrice;
   swap.inversePrice = amountReturned.toBigDecimal().div(amountPurchased.toBigDecimal());
   swap.converterFromTokenBalanceBeforeSwap = fromTokenBalanceBeforeSwap;
-  swap.converterFromTokenBlanceAfterSwap = fromTokenBalanceAfterSwap;
+  swap.converterFromTokenBalanceAfterSwap = fromTokenBalanceAfterSwap;
   swap.converterToTokenBalanceBeforeSwap = toTokenBalanceBeforeSwap;
   swap.converterToTokenBalanceAfterSwap = toTokenBalanceAfterSwap;
   swap.slippage = slippage;

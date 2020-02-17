@@ -1,6 +1,8 @@
 import {
+    Address,
     BigInt,
-    log
+    log,
+    EthereumBlock
 } from "@graphprotocol/graph-ts"
 import {
     TokenAddition,
@@ -30,6 +32,26 @@ import {
     Connector
 } from "../../generated/schema"
 
+import {converterBackfill, smartTokenBackfill} from './backfill'
+
+export function createBackfill(block: EthereumBlock): void {
+    if(block.number == BigInt.fromI32(6000000)) {
+        for(let i = 0; i < converterBackfill.length; i++) {
+            let converterAddress = converterBackfill[i];
+            ConverterTemplate.create(Address.fromString(converterAddress));
+            let converterEntity = new Converter(converterAddress);
+            converterEntity.save();
+        }
+
+        for(let j = 0; j < smartTokenBackfill.length; j++) {
+            let smartTokenAddress = smartTokenBackfill[j];
+            SmartTokenTemplate.create(Address.fromString(smartTokenAddress));
+            let smartTokenEntity = new Token(smartTokenAddress);
+            smartTokenEntity.save();
+        }
+    }
+}
+
 // Converter Registry events
 export function handleTokenAddition(event: TokenAddition): void {}
 
@@ -43,6 +65,9 @@ export function handleConverterAddition(event: ConverterAddition): void {
     if (converterEntity == null) {
         ConverterTemplate.create(event.params._address);
         converterEntity = new Converter(converterAddress.toHex());
+    }
+
+    if(converterEntity.firstAddedToRegistryBlockNumber == null) {
         converterEntity.firstAddedToRegistryBlockNumber = event.block.number;
         converterEntity.firstAddedToRegistryBlockTimestamp = event.block.timestamp;
     }
@@ -157,12 +182,17 @@ export function handleConverterAddition(event: ConverterAddition): void {
         }
 
         if(converterConnectorTokenCountResult.value > 1) {
+            let smartTokenEntity = Token.load(smartTokenAddress.toHex());
+            if( smartTokenEntity == null) {
+                smartTokenEntity = new Token(smartTokenAddress.toHex());
+                SmartTokenTemplate.create(smartTokenAddress);
+                log.debug("Smart Token template created: {}", [smartTokenAddress.toHex()]);
+            }
             let smartTokenContract = SmartTokenContract.bind(smartTokenAddress);
-            SmartTokenTemplate.create(smartTokenAddress);
-            log.debug("Smart Token template created: {}", [smartTokenAddress.toHex()]);
-            let smartTokenEntity = new Token(smartTokenAddress.toHex());
-            smartTokenEntity.addedToRegistryBlockNumber = event.block.number;
-            smartTokenEntity.addedToRegistryTransactionHash = event.transaction.hash.toHex();
+            if(smartTokenEntity.addedToRegistryBlockNumber == null) {
+                smartTokenEntity.addedToRegistryBlockNumber = event.block.number;
+                smartTokenEntity.addedToRegistryTransactionHash = event.transaction.hash.toHex();
+            }
             smartTokenEntity.isSmartToken = true;
             let smartTokenConnectorTokens = smartTokenEntity.connectorTokens || [];
             smartTokenConnectorTokens.push(connectorTokenAddress.toHex());

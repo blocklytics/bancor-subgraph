@@ -99,7 +99,7 @@ type Swap @entity {
   inversePrice: BigDecimal
   converterWeight: BigInt
   converterFromTokenBalanceBeforeSwap: BigInt
-  converterFromTokenBlanceAfterSwap: BigInt
+  converterFromTokenBalanceAfterSwap: BigInt
   converterToTokenBalanceBeforeSwap: BigInt
   converterToTokenBalanceAfterSwap: BigInt
   slippage: BigDecimal
