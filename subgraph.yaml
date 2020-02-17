@@ -5,11 +5,32 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
+    name: CrowdsaleContract
+    network: mainnet
+    source:
+      address: "0xbbc79794599b19274850492394004087cbf89710"
+      abi: CrowdsaleContract
+      startBlock: 3851207
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - OwnerUpdate
+      abis:
+        - name: CrowdsaleContract
+          file: ./abis/CrowdsaleContract.json
+      eventHandlers:
+        - event: OwnerUpdate(address,address)
+          handler: createBackfill
+      file: ./src/mappings/crowdsale.ts
+  - kind: ethereum/contract
     name: ContractRegistryContract
     network: mainnet
     source:
       address: "0x52Ae12ABe5D8BD778BD5397F99cA900624CfADD4"
       abi: ContractRegistryContract
+      startBlock: 6563025
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -32,7 +53,7 @@ dataSources:
     source:
       address: "0x0ddff327ddf7fe838e3e63d02001ef23ad1ede8e"
       abi: ConverterRegistryContract
-      startBlock: 6000000
+      startBlock: 7764526
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -63,8 +84,6 @@ dataSources:
           handler: handleConverterRemoval
         - event: OwnerUpdate(indexed address,indexed address)
           handler: handleConverterRegistryOwnerUpdate
-      blockHandlers:
-        - handler: createBackfill
       file: ./src/mappings/converterRegistry1.ts
   - kind: ethereum/contract
     name: ConverterRegistryContract2

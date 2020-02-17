@@ -32,26 +32,6 @@ import {
     Connector
 } from "../../generated/schema"
 
-import {converterBackfill, smartTokenBackfill} from './backfill'
-
-export function createBackfill(block: EthereumBlock): void {
-    if(block.number == BigInt.fromI32(6000000)) {
-        for(let i = 0; i < converterBackfill.length; i++) {
-            let converterAddress = converterBackfill[i];
-            ConverterTemplate.create(Address.fromString(converterAddress));
-            let converterEntity = new Converter(converterAddress);
-            converterEntity.save();
-        }
-
-        for(let j = 0; j < smartTokenBackfill.length; j++) {
-            let smartTokenAddress = smartTokenBackfill[j];
-            SmartTokenTemplate.create(Address.fromString(smartTokenAddress));
-            let smartTokenEntity = new Token(smartTokenAddress);
-            smartTokenEntity.save();
-        }
-    }
-}
-
 // Converter Registry events
 export function handleTokenAddition(event: TokenAddition): void {}
 
