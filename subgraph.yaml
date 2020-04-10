@@ -212,6 +212,50 @@ dataSources:
           handler: handleConverterRegistryOwnerUpdate
       file: ./src/mappings/converterRegistry4.ts
   - kind: ethereum/contract
+    name: ConverterRegistryContract5
+    network: mainnet
+    source:
+      address: "0xF84B332Db34C6A9b554D80cF9BC6124C1C74495D"
+      abi: ConverterRegistryContract
+      startBlock: 9656625
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - SmartTokenAdded
+        - SmartTokenRemoved
+        - LiquidityPoolAdded
+        - LiquidityPoolRemoved
+        - ConvertibleTokenAdded
+        - ConvertibleTokenRemoved
+        - OwnerUpdate
+      abis:
+        - name: ConverterRegistryContract
+          file: ./abis/NewConverterRegistryContract.json
+        - name: ConverterContract
+          file: ./abis/ConverterContract.json
+        - name: SmartTokenContract
+          file: ./abis/SmartTokenContract.json
+        - name: ERC20Contract
+          file: ./abis/ERC20Contract.json
+      eventHandlers:
+        - event: SmartTokenAdded(indexed address)
+          handler: handleSmartTokenAdded
+        - event: SmartTokenRemoved(indexed address)
+          handler: handleSmartTokenRemoved
+        - event: LiquidityPoolAdded(indexed address)
+          handler: handleLiquidityPoolAdded
+        - event: LiquidityPoolRemoved(indexed address)
+          handler: handleLiquidityPoolRemoved
+        - event: ConvertibleTokenAdded(indexed address,indexed address)
+          handler: handleConvertibleTokenAdded
+        - event: ConvertibleTokenRemoved(indexed address,indexed address)
+          handler: handleConvertibleTokenRemoved
+        - event: OwnerUpdate(indexed address,indexed address)
+          handler: handleConverterRegistryOwnerUpdate
+      file: ./src/mappings/converterRegistry5.ts
+  - kind: ethereum/contract
     name: ConverterUpgraderContract
     network: mainnet
     source:
